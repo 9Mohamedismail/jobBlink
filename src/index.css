@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: black; /* Ensure full coverage */
+}
+
+* {
+  font-family: IBM Plex Mono, Noto Sans Mono Variable, Noto Sans Mono, monospace;
+}

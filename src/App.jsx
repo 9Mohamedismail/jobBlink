@@ -1,11 +1,10 @@
-import SearchBar from "./components/searchbar";
-import Footer from "./components/Footer";
+import React from "react";
+import Save from "./pages/Save";
 
 function App() {
   return (
     <div>
-      <SearchBar />
-      <Footer />
+      <Save />
     </div>
   );
 }
