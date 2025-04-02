@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import InputBar from "../components/InputBar";
 import NavBar from "../components/NavBar";
 import styled from "styled-components";

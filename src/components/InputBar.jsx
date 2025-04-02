@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import axios from "axios";
 import styled, { css } from "styled-components";
+import { AddLocalStorage } from "../utils/jobStorage";
 
 const sharedStyles = css`
   border-radius: 11px;
@@ -42,7 +43,9 @@ function InputBar() {
     axios
       .get(`http://localhost:5000/api/job?url=${encodedUrl}`)
       .then((res) => {
-        console.log("AXIOS RES", res);
+        console.log("AXIOS RES", res.data);
+        setInputUrl("");
+        AddLocalStorage(res.data);
       })
       .catch(function (error) {
         console.log(error);

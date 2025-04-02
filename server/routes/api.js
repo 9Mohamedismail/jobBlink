@@ -4,7 +4,7 @@ import puppeteer from "puppeteer";
 const router = express.Router();
 
 router.get("/job", async (req, res) => {
-  const url = req.query.url;
+  const url = decodeURI(req.query.url);
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
