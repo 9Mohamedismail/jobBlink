@@ -14,3 +14,7 @@ export const AddLocalStorage = (jobData) => {
 export const RetrieveLocalStorage = () => {
   return JSON.parse(localStorage.getItem("jobData") || "[]");
 };
+
+export const UpdateLocalStorage = (updatedJobData) => {
+  localStorage.setItem("jobData", JSON.stringify(updatedJobData));
+};

@@ -1,15 +1,8 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import axios from "axios";
-import styled, { css } from "styled-components";
-import { AddLocalStorage } from "../utils/jobStorage";
-
-const sharedStyles = css`
-  border-radius: 11px;
-  border: solid #383838;
-  padding: 10px;
-  background-color: transparent;
-  color: #e1e1e1;
-`;
+import styled from "styled-components";
+import { AddLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
+import CustomButton from "./CustomButton";
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,16 +13,14 @@ const InputField = styled.input`
   height: 18px;
   margin: 0;
   flex: 1;
-  ${sharedStyles}
+  border-radius: 11px;
+  border: solid #383838;
+  padding: 10px;
+  background-color: transparent;
+  color: #e1e1e1;
 `;
 
-const Button = styled.button`
-  width: 72px;
-  margin-left: 10px;
-  ${sharedStyles}
-`;
-
-function InputBar() {
+function InputBar({ setVisible }) {
   const [inputUrl, setInputUrl] = useState("");
 
   const handleChange = (e) => {
@@ -41,10 +32,16 @@ function InputBar() {
     const encodedUrl = encodeURIComponent(inputUrl);
     axios
       .get(`http://localhost:5000/api/job?url=${encodedUrl}`)
-      .then((res) => {
-        console.log("AXIOS RES", res.data);
+      .then(({ data }) => {
+        console.log("AXIOS RES", data);
         setInputUrl("");
-        AddLocalStorage({ ...res.data, date: formattedDate, url: inputUrl });
+        AddLocalStorage({
+          ...data,
+          key: RetrieveLocalStorage().length,
+          date: formattedDate,
+          url: inputUrl,
+        });
+        setVisible(true);
       })
       .catch(function (error) {
         console.log(error);
@@ -53,15 +50,17 @@ function InputBar() {
 
   console.log(inputUrl);
   return (
-    <Wrapper>
-      <InputField
-        type="text"
-        placeholder="paste job link here"
-        value={inputUrl}
-        onChange={handleChange}
-      />
-      <Button onClick={handleClick}> submit </Button>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <InputField
+          type="text"
+          placeholder="paste job link here"
+          value={inputUrl}
+          onChange={handleChange}
+        />
+        <CustomButton onClick={handleClick} text="submit" />
+      </Wrapper>
+    </>
   );
 }
 

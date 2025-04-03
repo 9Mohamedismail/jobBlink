@@ -1,50 +1,142 @@
 import { useEffect, useState } from "react";
-import { Table } from "antd";
-import { RetrieveLocalStorage } from "../utils/jobStorage";
+import { Empty, Table, ConfigProvider, Popconfirm, theme } from "antd";
+import CustomButton from "./CustomButton";
+import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
+import { useNavigate } from "react-router";
+import styled from "styled-components";
 
-const columns = [
-  {
-    title: "Company",
-    dataIndex: "company",
-    key: "company",
-  },
-  {
-    title: "Position",
-    dataIndex: "position",
-    key: "position",
-  },
-  {
-    title: "Job Description Link",
-    dataIndex: "url",
-    key: "url",
-  },
-  {
-    title: "Location",
-    dataIndex: "location",
-    key: "location",
-  },
-  {
-    title: "Job Type",
-    dataIndex: "jobType",
-    key: "jobType",
-  },
-  {
-    title: "When did you apply?",
-    dataIndex: "date",
-    key: "date",
-  },
-];
+const TableButtons = styled.div`
+  padding: 24px;
+  gap: 10px;
+  display: flex;
+`;
+
+const EmptyData = styled.div`
+  .ant-empty-description {
+    color: #e1e1e1;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  gap: 12px;
+`;
 
 function JobTable() {
+  const columns = [
+    {
+      title: "company",
+      dataIndex: "company",
+      key: "company",
+    },
+    {
+      title: "position",
+      dataIndex: "position",
+      key: "position",
+    },
+    {
+      title: "job Description Link",
+      dataIndex: "url",
+      key: "url",
+    },
+    {
+      title: "location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "job Type",
+      dataIndex: "jobType",
+      key: "jobType",
+    },
+    {
+      title: "apply date",
+      dataIndex: "date",
+      key: "date",
+    },
+    {
+      title: "action",
+      dataIndex: "action",
+      render: (_, record) =>
+        jobData.length >= 1 ? (
+          <Popconfirm
+            title="are you sure?"
+            placement="left"
+            okText="yes"
+            cancelText="cancel"
+            onConfirm={() => handleDelete([record.key])}
+          >
+            <CustomButton text="delete" danger />
+          </Popconfirm>
+        ) : null,
+    },
+  ];
+
+  const navigate = useNavigate();
+
+  const rowSelection = {
+    onChange: (selectedRowKeys) => {
+      setSelectedRowKeys(selectedRowKeys);
+    },
+  };
+
   const [jobData, setJobData] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
     setJobData(RetrieveLocalStorage());
   }, []);
 
-  console.log(jobData);
+  const handleDelete = (key) => {
+    console.log(key);
+    const newData = jobData.filter((job) => !key.includes(job.key));
+    setJobData(newData);
+    UpdateLocalStorage(newData);
+  };
 
-  return <Table columns={columns} dataSource={jobData} />;
+  console.log(jobData.length);
+  console.log(selectedRowKeys);
+
+  return (
+    <>
+      {jobData.length ? (
+        <div>
+          <ConfigProvider
+            theme={{
+              algorithm: theme.darkAlgorithm,
+            }}
+          >
+            <TableButtons>
+              <CustomButton text="add" />
+              <CustomButton text="edit" />
+              {selectedRowKeys.length && (
+                <Popconfirm
+                  title="are you sure?"
+                  placement="bottom"
+                  okText="yes"
+                  cancelText="cancel"
+                  onConfirm={() => handleDelete(selectedRowKeys)}
+                >
+                  <CustomButton text="delete checked" />
+                </Popconfirm>
+              )}
+            </TableButtons>
+            <Table
+              rowSelection={{ type: "checkbox", ...rowSelection }}
+              columns={columns}
+              dataSource={jobData}
+            />
+          </ConfigProvider>
+        </div>
+      ) : (
+        <EmptyData>
+          <Empty />
+          <CustomButton text="add first job" onClick={() => navigate("/")} />
+        </EmptyData>
+      )}
+    </>
+  );
 }
 
 export default JobTable;
