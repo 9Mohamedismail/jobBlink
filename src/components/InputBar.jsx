@@ -39,13 +39,14 @@ function InputBar() {
   };
 
   const handleClick = () => {
+    const formattedDate = new Date().toLocaleDateString();
     const encodedUrl = encodeURIComponent(inputUrl);
     axios
       .get(`http://localhost:5000/api/job?url=${encodedUrl}`)
       .then((res) => {
         console.log("AXIOS RES", res.data);
         setInputUrl("");
-        AddLocalStorage(res.data);
+        AddLocalStorage({ ...res.data, date: formattedDate, url: inputUrl });
       })
       .catch(function (error) {
         console.log(error);

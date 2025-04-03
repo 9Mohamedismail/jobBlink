@@ -12,5 +12,5 @@ export const AddLocalStorage = (jobData) => {
 };
 
 export const RetrieveLocalStorage = () => {
-  return (jobDataStorage = JSON.parse(localStorage.getItem("jobData") || "[]"));
+  return JSON.parse(localStorage.getItem("jobData") || "[]");
 };
