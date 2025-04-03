@@ -8,8 +8,6 @@ const sharedStyles = css`
   border: solid #383838;
   padding: 10px;
   background-color: transparent;
-  font-weight: 500;
-  font-size: 14px;
   color: #e1e1e1;
 `;
 

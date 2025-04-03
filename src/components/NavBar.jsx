@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import logo from "../assets/Logo.png";
 import {
@@ -8,6 +9,8 @@ import {
 } from "react-icons/hi";
 
 function NavBar() {
+  const navigate = useNavigate();
+
   const NavBar = styled.div`
     display: grid;
     align-content: space-between;
@@ -41,21 +44,21 @@ function NavBar() {
     <NavBar>
       <div>
         <Logo src={logo} />
-        <Tab>
+        <Tab onClick={() => navigate("/")}>
           <HiLink size={28} />
           <p> add </p>
         </Tab>
-        <Tab>
+        <Tab onClick={() => navigate("/jobs")}>
           <HiBriefcase size={28} />
           <p> jobs </p>
         </Tab>
       </div>
       <div>
-        <Tab>
+        <Tab onClick={() => navigate("/settings")}>
           <HiOutlineCog size={28} />
           <p> settings </p>
         </Tab>
-        <Tab>
+        <Tab onClick={() => navigate("/about")}>
           <HiOutlineInformationCircle size={28} />
           <p> about </p>
         </Tab>

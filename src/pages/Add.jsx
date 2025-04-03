@@ -1,13 +1,7 @@
-import { useEffect } from "react";
 import InputBar from "../components/InputBar";
 import NavBar from "../components/NavBar";
 import styled from "styled-components";
 import logo from "../assets/Logo.png";
-
-const Container = styled.div`
-  display: flex;
-  height: 100vh;
-`;
 
 const Content = styled.div`
   display: flex;
@@ -21,16 +15,13 @@ const Logo = styled.img`
   width: 20%;
 `;
 
-function Save() {
+function Add() {
   return (
-    <Container>
-      <NavBar />
-      <Content>
-        <Logo src={logo} />
-        <InputBar />
-      </Content>
-    </Container>
+    <Content>
+      <Logo src={logo} />
+      <InputBar />
+    </Content>
   );
 }
 
-export default Save;
+export default Add;

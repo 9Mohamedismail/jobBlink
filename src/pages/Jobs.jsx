@@ -1,7 +1,7 @@
 import JobTable from "../components/jobTable";
 
-function List() {
+function Jobs() {
   return <JobTable />;
 }
 
-export default List;
+export default Jobs;

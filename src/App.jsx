@@ -1,12 +1,28 @@
 import React from "react";
-import Save from "./pages/Save";
-import List from "./pages/List";
+import { Route, Routes } from "react-router-dom";
+import styled from "styled-components";
+import NavBar from "./components/NavBar";
+import Add from "./pages/Add";
+import Jobs from "./pages/Jobs";
+import About from "./pages/About";
+import Settings from "./pages/Settings";
+
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+`;
 
 function App() {
   return (
-    <div>
-      <List />
-    </div>
+    <Container>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Add />} />
+        <Route path="/jobs" element={<Jobs />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Container>
   );
 }
 
