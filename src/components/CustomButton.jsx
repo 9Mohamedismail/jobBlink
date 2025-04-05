@@ -13,10 +13,11 @@ const Button = styled.button`
 `;
 
 const CustomButton = React.forwardRef(
-  ({ text, onClick = () => {}, danger = false }, ref) => {
+  ({ text, onClick = () => {}, danger = false, icon }, ref) => {
     return (
       <Button ref={ref} $danger={danger} onClick={onClick}>
         {text}
+        {icon}
       </Button>
     );
   }

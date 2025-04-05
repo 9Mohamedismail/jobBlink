@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { AddLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
 import CustomButton from "./CustomButton";
+import { FaPaste } from "react-icons/fa";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,6 +19,13 @@ const InputField = styled.input`
   padding: 10px;
   background-color: transparent;
   color: #e1e1e1;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  width: 37%;
 `;
 
 function InputBar({ setVisible }) {
@@ -48,6 +56,10 @@ function InputBar({ setVisible }) {
       });
   };
 
+  const handlePaste = async () => {
+    setInputUrl(await navigator.clipboard.readText());
+  };
+
   console.log(inputUrl);
   return (
     <>
@@ -60,6 +72,13 @@ function InputBar({ setVisible }) {
         />
         <CustomButton onClick={handleClick} text="submit" />
       </Wrapper>
+      <ButtonWrapper>
+        <CustomButton
+          text="paste "
+          icon={<FaPaste size={14} />}
+          onClick={handlePaste}
+        />
+      </ButtonWrapper>
     </>
   );
 }
