@@ -10,6 +10,7 @@ const Content = styled.div`
   align-items: center;
   width: 100%;
   flex-direction: column;
+  transform: translateY(-50px);
 `;
 
 const AlertWrapper = styled.div`
@@ -22,6 +23,7 @@ const AlertWrapper = styled.div`
 
 const Logo = styled.img`
   width: 20%;
+  margin-bottom: clamp(-100px, -5vw, -20px);
 `;
 
 function Add() {

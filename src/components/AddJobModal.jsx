@@ -4,11 +4,13 @@ import { Modal } from "antd";
 import AddJobForm from "./AddJobForm";
 import { RetrieveLocalStorage, AddLocalStorage } from "../utils/jobStorage";
 import styled from "styled-components";
+import CustomButton from "./CustomButton";
 
 const CustomModal = styled(Modal)`
   .ant-modal-content,
-  .ant-modal-title {
-    background-color: #101010;
+  .ant-modal-header,
+  .ant-modal-footer {
+    background-color: black;
     color: #e1e1e1;
   }
 `;
@@ -41,11 +43,21 @@ const AddJobModal = ({ open, setOpen, refreshJobData }) => {
   return (
     <>
       <CustomModal
-        title="add job"
+        title=""
+        closable={false}
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
+        footer={[
+          <CustomButton key="cancel" onClick={handleCancel} text="cancel" />,
+          <CustomButton
+            key="ok"
+            onClick={handleOk}
+            text="add job"
+            loading={confirmLoading}
+          />,
+        ]}
       >
         <AddJobForm form={form} onFinish={onFinish} />
       </CustomModal>

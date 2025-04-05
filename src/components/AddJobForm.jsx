@@ -1,4 +1,4 @@
-import { Form, Input, DatePicker } from "antd";
+import { Form, Input, Select, DatePicker } from "antd";
 import styled from "styled-components";
 
 const CustomForm = styled(Form)`
@@ -6,68 +6,37 @@ const CustomForm = styled(Form)`
     color: #e1e1e1;
   }
 
-  /* Dark theme for input fields in ant design form */
+  /* Apply dark theme to both Input and Select (including error state) */
   .ant-input,
-  .ant-form-item-has-error .ant-input {
-    background-color: #101010;
-    color: #e1e1e1;
-    border-color: #e1e1e1;
+  .ant-select,
+  .ant-form-item-has-error .ant-input,
+  .ant-form-item-has-error .ant-select,
+  .ant-select-selector {
+    background-color: black !important;
+    color: #e1e1e1 !important;
+    border-color: #383838 !important;
   }
 
+  /* Hover and focus states */
   .ant-input:hover,
-  .ant-form-item-has-error .ant-input:hover,
   .ant-input:focus,
-  .ant-form-item-has-error .ant-input:focus {
-    background-color: #101010;
-    color: #e1e1e1;
-    border-color: #e1e1e1;
-  }
-
-  .ant-input::placeholder {
-    color: #e1e1e1;
-  }
-
-  /* Dark theme for calendar in ant design form */
-  .ant-picker,
-  .ant-picker-input > input {
-    background-color: #101010;
-    color: #e1e1e1;
-    border-color: #e1e1e1;
-  }
-
-  .ant-picker:hover,
-  .ant-picker:focus,
-  .ant-picker-input > input:hover,
-  .ant-picker-input > input:focus {
-    background-color: #101010;
-    color: #e1e1e1;
-    border-color: #e1e1e1;
-  }
-
-  .ant-picker-input > input::placeholder {
-    color: #e1e1e1;
-  }
-
-  .ant-form-item-has-error .ant-picker,
-  .ant-form-item-has-error .ant-picker-input > input {
-    background-color: #101010;
-    color: #e1e1e1;
-    border-color: #e1e1e1;
-  }
-
-  .ant-form-item-has-error .ant-picker:hover,
-  .ant-form-item-has-error .ant-picker:focus,
-  .ant-form-item-has-error .ant-picker-input > input:hover,
-  .ant-form-item-has-error .ant-picker-input > input:focus {
-    background-color: #101010;
-    color: #e1e1e1;
-    border-color: #e1e1e1;
+  .ant-form-item-has-error .ant-input:hover,
+  .ant-form-item-has-error .ant-input:focus,
+  .ant-select-selector:hover,
+  .ant-select-selector:focus {
+    background-color: black !important;
+    color: #e1e1e1 !important;
+    border-color: #e1e1e1 !important;
   }
 `;
-
 function AddJobForm({ form, onFinish }) {
   return (
-    <CustomForm layout="horizontal" form={form} onFinish={onFinish}>
+    <CustomForm
+      layout="horizontal"
+      form={form}
+      onFinish={onFinish}
+      requiredMark={false}
+    >
       <Form.Item label="company" name="company" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
@@ -85,7 +54,14 @@ function AddJobForm({ form, onFinish }) {
         <Input />
       </Form.Item>
       <Form.Item label="job type" name="jobType" rules={[{ required: true }]}>
-        <Input />
+        <Select>
+          <Option value="FULL TIME">full-time</Option>
+          <Option value="PART TIME">part-time</Option>
+          <Option value="CONTRACT">contract</Option>
+          <Option value="INTERNSHIP">internship</Option>
+          <Option value="TEMPORARY">temporary</Option>
+          <Option value="FREELANCE">freelance</Option>
+        </Select>
       </Form.Item>
       <Form.Item label="date applied" name="date" rules={[{ required: true }]}>
         <DatePicker format="M-DD-YYYY" placeholder="" />

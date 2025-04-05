@@ -29,6 +29,7 @@ const ButtonWrapper = styled.div`
 `;
 
 function InputBar({ setVisible }) {
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
 
   const handleChange = (e) => {
@@ -38,6 +39,7 @@ function InputBar({ setVisible }) {
   const handleClick = () => {
     const formattedDate = new Date().toLocaleDateString();
     const encodedUrl = encodeURIComponent(inputUrl);
+    setConfirmLoading(true);
     axios
       .get(`http://localhost:5000/api/job?url=${encodedUrl}`)
       .then(({ data }) => {
@@ -50,9 +52,11 @@ function InputBar({ setVisible }) {
           url: inputUrl,
         });
         setVisible(true);
+        setConfirmLoading(false);
       })
       .catch(function (error) {
         console.log(error);
+        setConfirmLoading(false);
       });
   };
 
@@ -70,7 +74,11 @@ function InputBar({ setVisible }) {
           value={inputUrl}
           onChange={handleChange}
         />
-        <CustomButton onClick={handleClick} text="submit" />
+        <CustomButton
+          onClick={handleClick}
+          text="submit"
+          loading={confirmLoading}
+        />
       </Wrapper>
       <ButtonWrapper>
         <CustomButton

@@ -24,10 +24,6 @@ const EmptyData = styled.div`
   gap: 12px;
 `;
 
-const Container = styled.div`
-  width: 100%;
-`;
-
 function JobTable() {
   const columns = [
     {
