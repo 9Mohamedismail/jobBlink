@@ -4,6 +4,7 @@ import CustomButton from "./CustomButton";
 import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
+import AddJobModal from "./AddJobModal";
 
 const TableButtons = styled.div`
   padding: 24px;
@@ -21,6 +22,10 @@ const EmptyData = styled.div`
   width: 100%;
   flex-direction: column;
   gap: 12px;
+`;
+
+const Container = styled.div`
+  width: 100%;
 `;
 
 function JobTable() {
@@ -81,12 +86,21 @@ function JobTable() {
     },
   };
 
+  const [open, setOpen] = useState(false);
   const [jobData, setJobData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
     setJobData(RetrieveLocalStorage());
   }, []);
+
+  const refreshJobData = () => {
+    setJobData(RetrieveLocalStorage());
+  };
+
+  const showModal = () => {
+    setOpen(true);
+  };
 
   const handleDelete = (key) => {
     console.log(key);
@@ -99,7 +113,7 @@ function JobTable() {
   console.log(selectedRowKeys);
 
   return (
-    <>
+    <div>
       {jobData.length ? (
         <div>
           <ConfigProvider
@@ -108,7 +122,7 @@ function JobTable() {
             }}
           >
             <TableButtons>
-              <CustomButton text="add" />
+              <CustomButton text="add" onClick={() => showModal()} />
               <CustomButton text="edit" />
               {selectedRowKeys.length && (
                 <Popconfirm
@@ -135,7 +149,12 @@ function JobTable() {
           <CustomButton text="add first job" onClick={() => navigate("/")} />
         </EmptyData>
       )}
-    </>
+      <AddJobModal
+        open={open}
+        setOpen={setOpen}
+        refreshJobData={refreshJobData}
+      />
+    </div>
   );
 }
 
