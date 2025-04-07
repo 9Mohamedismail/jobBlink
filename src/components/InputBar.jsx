@@ -78,6 +78,8 @@ function InputBar({ setVisible }) {
       setVisible(true);
       setConfirmLoading(false);
     } catch (error) {
+      setOpen(true);
+      setUrlErrorType(urlType);
       setConfirmLoading(false);
     }
   };
