@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { AddLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
 import CustomButton from "./CustomButton";
 import { FaPaste } from "react-icons/fa";
+import { handleLeverURL } from "../utils/handleLeverURL";
+import { handleURL } from "../utils/handleURL";
+import JobErrorModal from "./JobUrlErrorModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,36 +31,54 @@ const ButtonWrapper = styled.div`
   width: 37%;
 `;
 
+const supportJobs = {
+  "boards.greenhouse.io": "Greenhouse",
+  "bah.wd1.myworkdayjobs.com": "Workday",
+  "jobs.lever.co": "Lever",
+};
+
 function InputBar({ setVisible }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
+  const [open, setOpen] = useState(true);
 
   const handleChange = (e) => {
     setInputUrl(e.target.value);
   };
 
-  const handleClick = () => {
-    const formattedDate = new Date().toLocaleDateString();
-    const encodedUrl = encodeURIComponent(inputUrl);
+  const handleClick = async () => {
     setConfirmLoading(true);
-    axios
-      .get(`http://localhost:5000/api/job?url=${encodedUrl}`)
-      .then(({ data }) => {
-        console.log("AXIOS RES", data);
+    const formattedDate = new Date().toLocaleDateString();
+    const splitURL = inputUrl.split("/");
+    const urlType = supportJobs[splitURL[2]] ?? "Unknown";
+    let jobData = "t";
+    console.log(urlType);
+    try {
+      if (urlType === "Lever") {
+        jobData = await handleLeverURL(splitURL[3], splitURL[4]);
+        console.log(jobData);
         setInputUrl("");
-        AddLocalStorage({
-          ...data,
-          key: RetrieveLocalStorage().length,
-          date: formattedDate,
-          url: inputUrl,
-        });
-        setVisible(true);
-        setConfirmLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-        setConfirmLoading(false);
+      } else if (urlType !== "Unknown") {
+        const encodedUrl = encodeURIComponent(inputUrl);
+        jobData = await handleURL(encodedUrl);
+        setInputUrl("");
+      } else {
+        console.log("unknown");
+      }
+
+      console.log(jobData);
+      AddLocalStorage({
+        ...jobData,
+        key: RetrieveLocalStorage().length,
+        date: formattedDate,
+        url: inputUrl,
       });
+      setVisible(true);
+      setConfirmLoading(false);
+    } catch (error) {
+      console.log("ERROR!", error);
+      setConfirmLoading(false);
+    }
   };
 
   const handlePaste = async () => {
@@ -87,6 +108,7 @@ function InputBar({ setVisible }) {
           onClick={handlePaste}
         />
       </ButtonWrapper>
+      <JobErrorModal open={open} setOpen={setOpen} />
     </>
   );
 }

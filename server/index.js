@@ -9,4 +9,16 @@ app.use(cors());
 app.use("/api", apiRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app
+  .listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  })
+  .on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`❌ Port ${PORT} is already in use. Exiting...`);
+      process.exit(1); // <- kill the process cleanly to avoid infinite loop
+    } else {
+      console.error("Server error:", err);
+    }
+  });
