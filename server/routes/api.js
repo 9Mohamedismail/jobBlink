@@ -5,6 +5,23 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 const router = express.Router();
 puppeteer.use(StealthPlugin());
 
+function detectPlatform(url) {
+  if (url.includes("greenhouse.io")) return "Greenhouse";
+  if (url.includes("myworkdayjobs.com")) return "Workday";
+  return "Unknown";
+}
+
+async function isInvalidPage(page, platform) {
+  if (platform === "Greenhouse") {
+    return await page
+      .$eval('link[rel="canonical"]', (el) => el.href.includes("error=true"))
+      .catch(() => false);
+  }
+  if (platform === "Workday") {
+    return !!(await page.$('[data-automation-id="errorMessage"]'));
+  }
+  return false;
+}
 async function scrapeJobData(url) {
   let browser;
   try {
@@ -19,13 +36,12 @@ async function scrapeJobData(url) {
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     );
 
-    try {
-      await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
-    } catch (navError) {
-      console.error("Navigation error:", navError);
-      throw new Error(
-        "Failed to navigate to URL. Website might be blocking scraping."
-      );
+    await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
+
+    const platform = detectPlatform(url);
+
+    if (await isInvalidPage(page, platform)) {
+      throw new Error(`${platform.toUpperCase()}_DELETED`);
     }
 
     const jobData = await page.evaluate(() => {

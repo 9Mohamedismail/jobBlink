@@ -76,9 +76,9 @@ const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
             </p>
           ) : (
             <p>
-              `looks like you inputted a `${urlErrorType} link. that service is
+              looks like you inputted a {urlErrorType} link. that service is
               supported but something went wrong with the link. mind checking it
-              and trying again?`
+              and trying again?
             </p>
           )}
         </KnownUrlModal>
@@ -95,8 +95,8 @@ const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
           ]}
         >
           <p>
-            looks like this ___ job isn’t available anymore grab a different
-            link to track.
+            looks like this {urlErrorType.toLowerCase()} job isn’t available
+            anymore. grab a different link to track.
           </p>
         </JobDeletedModal>
       )}

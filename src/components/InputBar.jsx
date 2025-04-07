@@ -31,9 +31,9 @@ const ButtonWrapper = styled.div`
   width: 37%;
 `;
 
-const supportJobs = {
+const supportedJobs = {
   "boards.greenhouse.io": "GREENHOUSE",
-  "bah.wd1.myworkdayjobs.com": "WORKDAY",
+  "myworkdayjobs.com": "WORKDAY",
   "jobs.lever.co": "LEVER",
 };
 
@@ -51,7 +51,17 @@ function InputBar({ setVisible }) {
     setConfirmLoading(true);
     const formattedDate = new Date().toLocaleDateString();
     const splitURL = inputUrl.split("/");
-    const urlType = supportJobs[splitURL[2]] ?? "INVALID_URL";
+    const urlObj = new URL(inputUrl);
+    const host = urlObj.host;
+
+    let urlType = "INVALID_URL";
+    for (const domain in supportedJobs) {
+      if (host.includes(domain)) {
+        urlType = supportedJobs[domain];
+        break;
+      }
+    }
+
     let jobData = "";
     try {
       if (urlType === "LEVER") {
@@ -60,6 +70,7 @@ function InputBar({ setVisible }) {
       } else if (urlType !== "INVALID_URL") {
         const encodedUrl = encodeURIComponent(inputUrl);
         jobData = await handleURL(encodedUrl);
+        console.log(jobData);
         setInputUrl("");
       } else {
         setOpen(true);
@@ -78,8 +89,15 @@ function InputBar({ setVisible }) {
       setVisible(true);
       setConfirmLoading(false);
     } catch (error) {
+      console.log("Error caught:", error.message);
+
+      if (error.message.includes("_DELETED")) {
+        setUrlErrorType("DELETED_URL");
+      } else {
+        setUrlErrorType(urlType); // LEVER, GREENHOUSE, WORKDAY
+      }
+
       setOpen(true);
-      setUrlErrorType(urlType);
       setConfirmLoading(false);
     }
   };
