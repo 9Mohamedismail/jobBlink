@@ -32,15 +32,16 @@ const ButtonWrapper = styled.div`
 `;
 
 const supportJobs = {
-  "boards.greenhouse.io": "Greenhouse",
-  "bah.wd1.myworkdayjobs.com": "Workday",
-  "jobs.lever.co": "Lever",
+  "boards.greenhouse.io": "GREENHOUSE",
+  "bah.wd1.myworkdayjobs.com": "WORKDAY",
+  "jobs.lever.co": "LEVER",
 };
 
 function InputBar({ setVisible }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [urlErrorType, setUrlErrorType] = useState("");
 
   const handleChange = (e) => {
     setInputUrl(e.target.value);
@@ -50,20 +51,21 @@ function InputBar({ setVisible }) {
     setConfirmLoading(true);
     const formattedDate = new Date().toLocaleDateString();
     const splitURL = inputUrl.split("/");
-    const urlType = supportJobs[splitURL[2]] ?? "Unknown";
-    let jobData = "t";
-    console.log(urlType);
+    const urlType = supportJobs[splitURL[2]] ?? "INVALID_URL";
+    let jobData = "";
     try {
-      if (urlType === "Lever") {
+      if (urlType === "LEVER") {
         jobData = await handleLeverURL(splitURL[3], splitURL[4]);
-        console.log(jobData);
         setInputUrl("");
-      } else if (urlType !== "Unknown") {
+      } else if (urlType !== "INVALID_URL") {
         const encodedUrl = encodeURIComponent(inputUrl);
         jobData = await handleURL(encodedUrl);
         setInputUrl("");
       } else {
-        console.log("unknown");
+        setOpen(true);
+        setUrlErrorType(urlType);
+        setConfirmLoading(false);
+        return;
       }
 
       console.log(jobData);
@@ -76,7 +78,6 @@ function InputBar({ setVisible }) {
       setVisible(true);
       setConfirmLoading(false);
     } catch (error) {
-      console.log("ERROR!", error);
       setConfirmLoading(false);
     }
   };
@@ -108,7 +109,12 @@ function InputBar({ setVisible }) {
           onClick={handlePaste}
         />
       </ButtonWrapper>
-      <JobErrorModal open={open} setOpen={setOpen} />
+      <JobErrorModal
+        open={open}
+        setOpen={setOpen}
+        urlErrorType={urlErrorType}
+        setUrlErrorType={setUrlErrorType}
+      />
     </>
   );
 }

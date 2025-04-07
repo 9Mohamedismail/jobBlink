@@ -32,57 +32,64 @@ const JobDeletedModal = styled(Modal)`
   ${sharedStyle}
 `;
 
-const JobUrlErrorModal = ({ open, setOpen }) => {
+const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
   const handleCancel = () => {
     setOpen(false);
+    setUrlErrorType("");
   };
 
   return (
     <div>
-      <InvalidUrlModal
-        closable={false}
-        open={open}
-        onCancel={handleCancel}
-        centered
-        footer={[
-          <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-        ]}
-      >
-        <p>
-          looks like i don’t recognize this link, it might be invalid or that
-          service isn't supported yet. mind checking it and trying again?
-        </p>
-      </InvalidUrlModal>
+      {urlErrorType === "INVALID_URL" && (
+        <InvalidUrlModal
+          closable={false}
+          open={open}
+          onCancel={handleCancel}
+          centered
+          footer={[
+            <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
+          ]}
+        >
+          <p>
+            looks like i don’t recognize this link, it might be invalid or that
+            service isn't supported yet. mind checking it and trying again?
+          </p>
+        </InvalidUrlModal>
+      )}
 
-      <KnownUrlModal
-        closable={false}
-        open={open}
-        onCancel={handleCancel}
-        centered
-        footer={[
-          <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-        ]}
-      >
-        <p>
-          looks like you inputted a ___ link. that service is supported but the
-          link is returning an error. mind checking it and trying again?
-        </p>
-      </KnownUrlModal>
+      {urlErrorType === "KNOWN_URL" && (
+        <KnownUrlModal
+          closable={false}
+          open={open}
+          onCancel={handleCancel}
+          centered
+          footer={[
+            <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
+          ]}
+        >
+          <p>
+            looks like you inputted a ___ link. that service is supported but
+            the link is returning an error. mind checking it and trying again?
+          </p>
+        </KnownUrlModal>
+      )}
 
-      <JobDeletedModal
-        closable={false}
-        open={open}
-        onCancel={handleCancel}
-        centered
-        footer={[
-          <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-        ]}
-      >
-        <p>
-          looks like this ___ job isn’t available anymore grab a different link
-          to track.
-        </p>
-      </JobDeletedModal>
+      {urlErrorType === "DELETED_URL" && (
+        <JobDeletedModal
+          closable={false}
+          open={open}
+          onCancel={handleCancel}
+          centered
+          footer={[
+            <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
+          ]}
+        >
+          <p>
+            looks like this ___ job isn’t available anymore grab a different
+            link to track.
+          </p>
+        </JobDeletedModal>
+      )}
     </div>
   );
 };
