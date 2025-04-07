@@ -10,7 +10,7 @@ const Button = styled.button`
   padding: 10px;
   background-color: transparent;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  color: ${(props) => (props.$danger ? "red" : "#e1e1e1")};
+  color: ${(props) => (props.$danger ? "#ff4d4f" : "#e1e1e1")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 

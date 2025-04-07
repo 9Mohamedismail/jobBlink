@@ -6,27 +6,25 @@ const CustomForm = styled(Form)`
     color: #e1e1e1;
   }
 
-  /* Apply dark theme to both Input and Select (including error state) */
   .ant-input,
   .ant-select,
-  .ant-form-item-has-error .ant-input,
-  .ant-form-item-has-error .ant-select,
   .ant-select-selector {
     background-color: black !important;
     color: #e1e1e1 !important;
     border-color: #383838 !important;
   }
 
-  /* Hover and focus states */
   .ant-input:hover,
   .ant-input:focus,
-  .ant-form-item-has-error .ant-input:hover,
-  .ant-form-item-has-error .ant-input:focus,
   .ant-select-selector:hover,
   .ant-select-selector:focus {
     background-color: black !important;
     color: #e1e1e1 !important;
     border-color: #e1e1e1 !important;
+  }
+
+  .ant-form-item-has-error .ant-input {
+    border-color: #ff4d4f !important;
   }
 `;
 function AddJobForm({ form, onFinish }) {

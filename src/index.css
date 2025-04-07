@@ -149,3 +149,32 @@ body {
   background-color: #383838 !important;
   color: #e1e1e1 !important;
 }
+.ant-form-item-label > label {
+  color: #e1e1e1;
+}
+
+/* Dark theme for normal state for inputs only */
+.ant-input {
+  background-color: black !important;
+  color: #e1e1e1 !important;
+  border-color: #383838 !important;
+}
+
+/* Dark theme hover and focus for inputs only */
+.ant-input:hover,
+.ant-input:focus {
+  background-color: black !important;
+  color: #e1e1e1 !important;
+  border-color: #e1e1e1 !important;
+}
+
+/* Override error state to use the default red border for inputs only */
+.ant-form-item-has-error .ant-input {
+  border-color: #ff4d4f !important;
+}
+
+/* Override hover and focus for error state for inputs only */
+.ant-form-item-has-error .ant-input:hover,
+.ant-form-item-has-error .ant-input:focus {
+  border-color: #ff4d4f !important;
+}
