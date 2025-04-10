@@ -5,23 +5,6 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 const router = express.Router();
 puppeteer.use(StealthPlugin());
 
-function detectPlatform(url) {
-  if (url.includes("greenhouse.io")) return "Greenhouse";
-  if (url.includes("myworkdayjobs.com")) return "Workday";
-  return "Unknown";
-}
-
-async function isInvalidPage(page, platform) {
-  if (platform === "Greenhouse") {
-    return await page
-      .$eval('link[rel="canonical"]', (el) => el.href.includes("error=true"))
-      .catch(() => false);
-  }
-  if (platform === "Workday") {
-    return !!(await page.$('[data-automation-id="errorMessage"]'));
-  }
-  return false;
-}
 async function scrapeJobData(url) {
   let browser;
   try {
@@ -37,12 +20,6 @@ async function scrapeJobData(url) {
     );
 
     await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
-
-    const platform = detectPlatform(url);
-
-    if (await isInvalidPage(page, platform)) {
-      throw new Error(`${platform.toUpperCase()}_DELETED`);
-    }
 
     const jobData = await page.evaluate(() => {
       const script = document.querySelector(

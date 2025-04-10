@@ -50,36 +50,35 @@ function InputBar({ setVisible }) {
   const handleClick = async () => {
     setConfirmLoading(true);
     const formattedDate = new Date().toLocaleDateString();
-    const splitURL = inputUrl.split("/");
-    const urlObj = new URL(inputUrl);
-    const host = urlObj.host;
 
-    let urlType = "INVALID_URL";
-    for (const domain in supportedJobs) {
-      if (host.includes(domain)) {
-        urlType = supportedJobs[domain];
-        break;
-      }
-    }
-
-    let jobData = "";
     try {
-      if (urlType === "LEVER") {
-        jobData = await handleLeverURL(splitURL[3], splitURL[4]);
-        setInputUrl("");
-      } else if (urlType !== "INVALID_URL") {
-        const encodedUrl = encodeURIComponent(inputUrl);
-        jobData = await handleURL(encodedUrl);
-        console.log(jobData);
-        setInputUrl("");
-      } else {
-        setOpen(true);
+      const urlObj = new URL(inputUrl);
+      const host = urlObj.host;
+
+      let urlType = "INVALID_URL";
+      for (const domain in supportedJobs) {
+        if (host.includes(domain)) {
+          urlType = supportedJobs[domain];
+          break;
+        }
+      }
+
+      if (urlType === "INVALID_URL") {
         setUrlErrorType(urlType);
+        setOpen(true);
         setConfirmLoading(false);
         return;
       }
 
-      console.log(jobData);
+      let jobData = "";
+      if (urlType === "LEVER") {
+        const splitURL = inputUrl.split("/");
+        jobData = await handleLeverURL(splitURL[3], splitURL[4]);
+      } else {
+        const encodedUrl = encodeURIComponent(inputUrl);
+        jobData = await handleURL(encodedUrl);
+      }
+
       AddLocalStorage({
         ...jobData,
         key: RetrieveLocalStorage().length,
@@ -87,17 +86,12 @@ function InputBar({ setVisible }) {
         url: inputUrl,
       });
       setVisible(true);
-      setConfirmLoading(false);
+      setInputUrl("");
     } catch (error) {
-      console.log("Error caught:", error.message);
-
-      if (error.message.includes("_DELETED")) {
-        setUrlErrorType("DELETED_URL");
-      } else {
-        setUrlErrorType(urlType); // LEVER, GREENHOUSE, WORKDAY
-      }
-
+      console.error(error);
+      setUrlErrorType(urlType);
       setOpen(true);
+    } finally {
       setConfirmLoading(false);
     }
   };
