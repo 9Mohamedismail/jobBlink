@@ -32,6 +32,13 @@ const EmptyData = styled.div`
   gap: 12px;
 `;
 
+const TableContainer = styled.div`
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const EditableContext = React.createContext(null);
 
 const EditableRow = ({ index, ...props }) => {
@@ -189,9 +196,11 @@ function JobTable() {
   const [open, setOpen] = useState(false);
   const [jobData, setJobData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setJobData(RetrieveLocalStorage());
+    setLoading(false);
   }, []);
 
   const refreshJobData = () => {
@@ -209,12 +218,11 @@ function JobTable() {
     UpdateLocalStorage(newData);
   };
 
-  console.log(jobData.length);
-  console.log(selectedRowKeys);
-
   return (
-    <div>
-      {jobData.length ? (
+    <TableContainer>
+      {loading ? (
+        <div>Loading...</div>
+      ) : jobData.length ? (
         <div>
           <ConfigProvider
             theme={{
@@ -246,6 +254,7 @@ function JobTable() {
               rowSelection={{ type: "checkbox", ...rowSelection }}
               columns={mergedColumns}
               dataSource={jobData}
+              loading={loading}
             />
           </ConfigProvider>
         </div>
@@ -260,7 +269,7 @@ function JobTable() {
         setOpen={setOpen}
         refreshJobData={refreshJobData}
       />
-    </div>
+    </TableContainer>
   );
 }
 

@@ -15,9 +15,17 @@ const Button = styled.button`
 `;
 
 const CustomButton = React.forwardRef(
-  ({ text, onClick = () => {}, danger = false, icon, loading }, ref) => {
+  (
+    { text, onClick = () => {}, danger = false, icon, loading, disabled },
+    ref
+  ) => {
     return (
-      <Button ref={ref} $danger={danger} onClick={onClick} disabled={loading}>
+      <Button
+        ref={ref}
+        $danger={danger}
+        onClick={onClick}
+        disabled={loading || disabled}
+      >
         {loading ? <Spin size="small" /> : text}
         {icon}
       </Button>

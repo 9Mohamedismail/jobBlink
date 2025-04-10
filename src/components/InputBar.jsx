@@ -113,6 +113,7 @@ function InputBar({ setVisible }) {
           onClick={handleClick}
           text="submit"
           loading={confirmLoading}
+          disabled={!inputUrl.trim()}
         />
       </Wrapper>
       <ButtonWrapper>
