@@ -25,7 +25,10 @@ async function scrapeJobData(url) {
       const script = document.querySelector(
         'script[type="application/ld+json"]'
       );
-      return script ? JSON.parse(script.innerText) : null;
+      if (!script) {
+        throw new Error("KNOWN_URL_NO_JOB_DATA");
+      }
+      return JSON.parse(script.innerText);
     });
 
     return {
@@ -45,7 +48,7 @@ router.get("/job", async (req, res) => {
     const data = await scrapeJobData(url);
     res.json(data);
   } catch (err) {
-    console.error("Error fetching job data:", err);
+    console.error("Error fetching job data:", err.message);
     res.status(500).json({ error: err.message });
   }
 });

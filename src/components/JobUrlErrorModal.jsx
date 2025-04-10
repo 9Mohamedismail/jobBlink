@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal } from "antd";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import CustomButton from "./CustomButton";
 
-const sharedStyle = css`
+const UrlModal = styled(Modal)`
   .ant-modal-content {
     color: #e1e1e1;
     text-align: center;
@@ -22,15 +22,13 @@ const sharedStyle = css`
   }
 `;
 
-const InvalidUrlModal = styled(Modal)`
-  ${sharedStyle}
-`;
-const KnownUrlModal = styled(Modal)`
-  ${sharedStyle}
-`;
-const JobDeletedModal = styled(Modal)`
-  ${sharedStyle}
-`;
+const getErrorMessage = (urlErrorType) => {
+  if (urlErrorType === "INVALID_URL") {
+    return "looks like i don’t recognize this link, it might be invalid or that service isn't supported yet. mind checking it and trying again?";
+  }
+
+  return `looks like you used a ${urlErrorType.toLowerCase()} link. that service is supported but something went wrong with the link. it might be invalid or the job’s no longer available. mind checking it or grabbing a different link?`;
+};
 
 const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
   const handleCancel = () => {
@@ -38,44 +36,24 @@ const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
     setUrlErrorType("");
   };
 
-  return (
-    <div>
-      {urlErrorType === "INVALID_URL" && (
-        <InvalidUrlModal
-          closable={false}
-          open={open}
-          onCancel={handleCancel}
-          centered
-          footer={[
-            <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-          ]}
-        >
-          <p>
-            looks like i don’t recognize this link, it might be invalid or that
-            service isn't supported yet. mind checking it and trying again?
-          </p>
-        </InvalidUrlModal>
-      )}
+  console.log(urlErrorType);
 
-      {urlErrorType !== "KNOWN_URL" && (
-        <KnownUrlModal
-          closable={false}
-          open={open}
-          onCancel={handleCancel}
-          centered
-          footer={[
-            <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-          ]}
-        >
-          <p>
-            looks like you used a {urlErrorType} link. that service is supported
-            but something went wrong with the link. it might be invalid or the
-            job’s no longer available. mind checking it or grabbing a different
-            link?
-          </p>
-        </KnownUrlModal>
-      )}
-    </div>
+  return (
+    <>
+      <UrlModal
+        closable={false}
+        open={open}
+        onCancel={handleCancel}
+        centered
+        footer={[
+          <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
+        ]}
+      >
+        <p>
+          <p>{getErrorMessage(urlErrorType)}</p>
+        </p>
+      </UrlModal>
+    </>
   );
 };
 export default JobUrlErrorModal;

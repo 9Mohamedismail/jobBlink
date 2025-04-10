@@ -50,12 +50,12 @@ function InputBar({ setVisible }) {
   const handleClick = async () => {
     setConfirmLoading(true);
     const formattedDate = new Date().toLocaleDateString();
+    let urlType = "INVALID_URL";
 
     try {
       const urlObj = new URL(inputUrl);
       const host = urlObj.host;
 
-      let urlType = "INVALID_URL";
       for (const domain in supportedJobs) {
         if (host.includes(domain)) {
           urlType = supportedJobs[domain];
@@ -88,7 +88,6 @@ function InputBar({ setVisible }) {
       setVisible(true);
       setInputUrl("");
     } catch (error) {
-      console.error(error);
       setUrlErrorType(urlType);
       setOpen(true);
     } finally {
@@ -123,12 +122,15 @@ function InputBar({ setVisible }) {
           onClick={handlePaste}
         />
       </ButtonWrapper>
-      <JobErrorModal
-        open={open}
-        setOpen={setOpen}
-        urlErrorType={urlErrorType}
-        setUrlErrorType={setUrlErrorType}
-      />
+
+      {open && (
+        <JobErrorModal
+          open={open}
+          setOpen={setOpen}
+          urlErrorType={urlErrorType}
+          setUrlErrorType={setUrlErrorType}
+        />
+      )}
     </>
   );
 }

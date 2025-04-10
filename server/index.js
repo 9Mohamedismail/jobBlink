@@ -17,7 +17,7 @@ app
   .on("error", (err) => {
     if (err.code === "EADDRINUSE") {
       console.error(`❌ Port ${PORT} is already in use. Exiting...`);
-      process.exit(1); // <- kill the process cleanly to avoid infinite loop
+      process.exit(1);
     } else {
       console.error("Server error:", err);
     }
