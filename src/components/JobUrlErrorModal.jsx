@@ -67,38 +67,13 @@ const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
             <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
           ]}
         >
-          {urlErrorType === "LEVER" ? (
-            <p>
-              looks like you used a lever link. that service is supported but
-              something went wrong with the link. it might be invalid or the
-              job’s no longer available. mind checking it or grabbing a
-              different link?
-            </p>
-          ) : (
-            <p>
-              looks like you inputted a {urlErrorType} link. that service is
-              supported but something went wrong with the link. mind checking it
-              and trying again?
-            </p>
-          )}
-        </KnownUrlModal>
-      )}
-
-      {urlErrorType === "DELETED_URL" && (
-        <JobDeletedModal
-          closable={false}
-          open={open}
-          onCancel={handleCancel}
-          centered
-          footer={[
-            <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-          ]}
-        >
           <p>
-            looks like this {urlErrorType.toLowerCase()} job isn’t available
-            anymore. grab a different link to track.
+            looks like you used a {urlErrorType} link. that service is supported
+            but something went wrong with the link. it might be invalid or the
+            job’s no longer available. mind checking it or grabbing a different
+            link?
           </p>
-        </JobDeletedModal>
+        </KnownUrlModal>
       )}
     </div>
   );
