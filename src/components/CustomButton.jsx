@@ -6,7 +6,7 @@ const Button = styled.button`
   width: auto;
   margin-left: 10px;
   border-radius: 11px;
-  border: solid #383838;
+  border: solid #818181;
   padding: 10px;
   background-color: transparent;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
