@@ -37,6 +37,9 @@ const TableContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  display: flex;
+  width: 100%;
+  height: 100%;
 `;
 
 const EditableContext = React.createContext(null);
