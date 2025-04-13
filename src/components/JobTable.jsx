@@ -8,7 +8,8 @@ import {
   Popconfirm,
   theme,
   Tag,
-  message,
+  Dropdown,
+  Menu,
 } from "antd";
 import CustomButton from "./CustomButton";
 import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
@@ -17,6 +18,7 @@ import styled from "styled-components";
 import AddJobModal from "./AddJobModal";
 import EditJobModal from "./EditJobModal";
 import EditTagModal from "./EditTagModal";
+import { MoreOutlined } from "@ant-design/icons";
 
 const TableButtons = styled.div`
   padding: 24px;
@@ -44,6 +46,17 @@ const TableContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
+
+  .ant-table-cell .row-actions {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .ant-table-cell {
+    position: relative;
+  }
 `;
 
 const EditableContext = React.createContext(null);
@@ -125,8 +138,7 @@ const tagColors = {
 function JobTable() {
   const navigate = useNavigate();
 
-  // ✅ Clean universal modal system
-  const [activeModal, setActiveModal] = useState(null); // 'add', 'edit', 'editTag'
+  const [activeModal, setActiveModal] = useState(null);
   const [modalData, setModalData] = useState(null);
 
   const [jobData, setJobData] = useState([]);
@@ -156,7 +168,6 @@ function JobTable() {
     const newData = jobData.filter((job) => !keys.includes(job.key));
     setJobData(newData);
     UpdateLocalStorage(newData);
-    message.success("Deleted successfully");
   };
 
   const handleSave = (row) => {
@@ -205,20 +216,31 @@ function JobTable() {
       },
     },
     {
-      title: "action",
       dataIndex: "action",
-      render: (_, record) =>
-        jobData.length >= 1 ? (
-          <Popconfirm
-            title="are you sure?"
-            placement="left"
-            okText="yes"
-            cancelText="cancel"
-            onConfirm={() => handleDelete([record.key])}
-          >
-            <CustomButton text="delete" danger />
-          </Popconfirm>
-        ) : null,
+      width: 50, // keep it tight
+      render: (_, record) => {
+        const menuItems = [
+          {
+            key: "edit",
+            label: "Edit",
+            onClick: () => openModal("edit", record),
+          },
+          {
+            key: "delete",
+            label: "Delete",
+            danger: true,
+            onClick: () => handleDelete([record.key]),
+          },
+        ];
+
+        return (
+          <div className="row-actions">
+            <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
+              <MoreOutlined style={{ fontSize: "18px", cursor: "pointer" }} />
+            </Dropdown>
+          </div>
+        );
+      },
     },
   ];
 

@@ -21,7 +21,11 @@ const AddJobModal = ({ open, setOpen, refreshJobData }) => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    AddLocalStorage({ ...values, key: RetrieveLocalStorage().length });
+    AddLocalStorage({
+      ...values,
+      date: values.date ? values.date.format("M/DD/YYYY") : null,
+      key: RetrieveLocalStorage().length,
+    });
     setConfirmLoading(true);
     setTimeout(() => {
       refreshJobData();
