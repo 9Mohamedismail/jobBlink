@@ -8,6 +8,7 @@ import {
   Popconfirm,
   theme,
   Tag,
+  message,
 } from "antd";
 import CustomButton from "./CustomButton";
 import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
@@ -15,6 +16,7 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import AddJobModal from "./AddJobModal";
 import EditJobModal from "./EditJobModal";
+import EditTagModal from "./EditTagModal";
 
 const TableButtons = styled.div`
   padding: 24px;
@@ -123,11 +125,12 @@ const tagColors = {
 function JobTable() {
   const navigate = useNavigate();
 
+  // ✅ Clean universal modal system
+  const [activeModal, setActiveModal] = useState(null); // 'add', 'edit', 'editTag'
+  const [modalData, setModalData] = useState(null);
+
   const [jobData, setJobData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [selectedEditData, setSelectedEditData] = useState(null);
-  const [openAddModal, setOpenAddModal] = useState(false);
-  const [openEditModal, setOpenEditModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -139,10 +142,21 @@ function JobTable() {
     setJobData(RetrieveLocalStorage());
   };
 
+  const openModal = (modalName, data = null) => {
+    setActiveModal(modalName);
+    setModalData(data);
+  };
+
+  const closeModal = () => {
+    setActiveModal(null);
+    setModalData(null);
+  };
+
   const handleDelete = (keys) => {
     const newData = jobData.filter((job) => !keys.includes(job.key));
     setJobData(newData);
     UpdateLocalStorage(newData);
+    message.success("Deleted successfully");
   };
 
   const handleSave = (row) => {
@@ -201,7 +215,7 @@ function JobTable() {
         const color = tagColors[normalizedTag];
         return (
           <Tag color={color} key={normalizedTag}>
-            {normalizedTag}
+            {tag}
           </Tag>
         );
       },
@@ -236,10 +250,7 @@ function JobTable() {
         <div>
           <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
             <TableButtons>
-              <CustomButton
-                text="add job"
-                onClick={() => setOpenAddModal(true)}
-              />
+              <CustomButton text="add job" onClick={() => openModal("add")} />
 
               {selectedRowKeys.length > 0 && (
                 <>
@@ -250,8 +261,7 @@ function JobTable() {
                         const selectedData = jobData.find((item) =>
                           selectedRowKeys.includes(item.key)
                         );
-                        setSelectedEditData(selectedData);
-                        setOpenEditModal(true);
+                        openModal("edit", selectedData);
                       }}
                     />
                   )}
@@ -265,6 +275,16 @@ function JobTable() {
                   >
                     <CustomButton text="delete checked" />
                   </Popconfirm>
+
+                  <CustomButton
+                    text="change tag(s)"
+                    onClick={() => {
+                      const selectedData = jobData.filter((item) =>
+                        selectedRowKeys.includes(item.key)
+                      );
+                      openModal("editTag", selectedData);
+                    }}
+                  />
                 </>
               )}
             </TableButtons>
@@ -290,15 +310,22 @@ function JobTable() {
         </EmptyData>
       )}
 
+      {/* Modals */}
       <AddJobModal
-        open={openAddModal}
-        setOpen={setOpenAddModal}
+        open={activeModal === "add"}
+        setOpen={closeModal}
         refreshJobData={refreshJobData}
       />
       <EditJobModal
-        open={openEditModal}
-        setOpen={setOpenEditModal}
-        selectedEditData={selectedEditData}
+        open={activeModal === "edit"}
+        setOpen={closeModal}
+        selectedEditData={modalData}
+        refreshJobData={refreshJobData}
+      />
+      <EditTagModal
+        open={activeModal === "editTag"}
+        setOpen={closeModal}
+        selectedRows={modalData || []}
         refreshJobData={refreshJobData}
       />
     </TableContainer>
