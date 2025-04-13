@@ -190,6 +190,21 @@ function JobTable() {
     { title: "job Type", dataIndex: "jobType", key: "jobType", editable: true },
     { title: "apply date", dataIndex: "date", key: "date", editable: true },
     {
+      title: "Tag",
+      key: "tag",
+      dataIndex: "tag",
+      editable: true,
+      render: (tag) => {
+        const normalizedTag = tag?.toLowerCase();
+        const color = tagColors[normalizedTag];
+        return (
+          <Tag color={color} key={normalizedTag}>
+            {tag}
+          </Tag>
+        );
+      },
+    },
+    {
       title: "action",
       dataIndex: "action",
       render: (_, record) =>
@@ -204,21 +219,6 @@ function JobTable() {
             <CustomButton text="delete" danger />
           </Popconfirm>
         ) : null,
-    },
-    {
-      title: "Tag",
-      key: "tag",
-      dataIndex: "tag",
-      editable: true,
-      render: (tag) => {
-        const normalizedTag = tag?.toLowerCase();
-        const color = tagColors[normalizedTag];
-        return (
-          <Tag color={color} key={normalizedTag}>
-            {tag}
-          </Tag>
-        );
-      },
     },
   ];
 
@@ -237,10 +237,13 @@ function JobTable() {
   });
 
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedKeys) => {
       setSelectedRowKeys(selectedKeys);
     },
   };
+
+  const noneSelected = selectedRowKeys.length === 0;
 
   return (
     <TableContainer>
@@ -250,43 +253,54 @@ function JobTable() {
         <div>
           <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
             <TableButtons>
+              <CustomButton
+                text={noneSelected ? "select all" : "deselect all"}
+                onClick={() => {
+                  if (noneSelected) {
+                    setSelectedRowKeys(jobData.map((job) => job.key));
+                  } else {
+                    setSelectedRowKeys([]);
+                  }
+                }}
+                disabled={jobData.length === 0}
+              />
+
               <CustomButton text="add job" onClick={() => openModal("add")} />
 
-              {selectedRowKeys.length > 0 && (
-                <>
-                  {selectedRowKeys.length === 1 && (
-                    <CustomButton
-                      text="edit checked"
-                      onClick={() => {
-                        const selectedData = jobData.find((item) =>
-                          selectedRowKeys.includes(item.key)
-                        );
-                        openModal("edit", selectedData);
-                      }}
-                    />
-                  )}
+              <CustomButton
+                text="edit job"
+                onClick={() => {
+                  const selectedData = jobData.find((item) =>
+                    selectedRowKeys.includes(item.key)
+                  );
+                  openModal("edit", selectedData);
+                }}
+                disabled={selectedRowKeys.length !== 1}
+              />
 
-                  <Popconfirm
-                    title="are you sure?"
-                    placement="bottom"
-                    okText="yes"
-                    cancelText="cancel"
-                    onConfirm={() => handleDelete(selectedRowKeys)}
-                  >
-                    <CustomButton text="delete checked" />
-                  </Popconfirm>
+              <Popconfirm
+                title="are you sure?"
+                placement="bottom"
+                okText="yes"
+                cancelText="cancel"
+                onConfirm={() => handleDelete(selectedRowKeys)}
+              >
+                <CustomButton
+                  text="delete checked"
+                  disabled={selectedRowKeys.length === 0}
+                />
+              </Popconfirm>
 
-                  <CustomButton
-                    text="change tag(s)"
-                    onClick={() => {
-                      const selectedData = jobData.filter((item) =>
-                        selectedRowKeys.includes(item.key)
-                      );
-                      openModal("editTag", selectedData);
-                    }}
-                  />
-                </>
-              )}
+              <CustomButton
+                text="change tag(s)"
+                onClick={() => {
+                  const selectedData = jobData.filter((item) =>
+                    selectedRowKeys.includes(item.key)
+                  );
+                  openModal("editTag", selectedData);
+                }}
+                disabled={selectedRowKeys.length === 0}
+              />
             </TableButtons>
 
             <Table
