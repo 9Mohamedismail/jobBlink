@@ -114,7 +114,7 @@ const EditableCell = ({
 
 const tagColors = {
   applied: "blue",
-  interviewing: "purple",
+  interviewing: "gold",
   offer: "green",
   rejected: "red",
   followup: "orange",
