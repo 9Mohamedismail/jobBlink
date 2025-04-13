@@ -36,6 +36,7 @@ async function scrapeJobData(url) {
       position: jobData?.title ?? jobData?.identifier?.name ?? "",
       location: jobData?.jobLocation?.address?.addressLocality ?? "",
       jobType: jobData?.employmentType.replace(/_/g, " ") ?? "",
+      tag: "applied",
     };
   } finally {
     if (browser) await browser.close();

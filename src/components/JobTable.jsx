@@ -7,12 +7,14 @@ import {
   ConfigProvider,
   Popconfirm,
   theme,
+  Tag,
 } from "antd";
 import CustomButton from "./CustomButton";
 import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import AddJobModal from "./AddJobModal";
+import EditJobModal from "./EditJobModal";
 
 const TableButtons = styled.div`
   padding: 24px;
@@ -70,7 +72,7 @@ const EditableCell = ({
 
   useEffect(() => {
     if (editing) {
-      inputRef.current && inputRef.current.focus();
+      inputRef.current?.focus();
     }
   }, [editing]);
 
@@ -110,7 +112,39 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+const tagColors = {
+  applied: "blue",
+  interviewing: "purple",
+  offer: "green",
+  rejected: "red",
+  followup: "orange",
+};
+
 function JobTable() {
+  const navigate = useNavigate();
+
+  const [jobData, setJobData] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedEditData, setSelectedEditData] = useState(null);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setJobData(RetrieveLocalStorage());
+    setLoading(false);
+  }, []);
+
+  const refreshJobData = () => {
+    setJobData(RetrieveLocalStorage());
+  };
+
+  const handleDelete = (keys) => {
+    const newData = jobData.filter((job) => !keys.includes(job.key));
+    setJobData(newData);
+    UpdateLocalStorage(newData);
+  };
+
   const handleSave = (row) => {
     const newData = [...jobData];
     const index = newData.findIndex((item) => row.key === item.key);
@@ -120,12 +154,7 @@ function JobTable() {
   };
 
   const columns = [
-    {
-      title: "company",
-      dataIndex: "company",
-      key: "company",
-      editable: true,
-    },
+    { title: "company", dataIndex: "company", key: "company", editable: true },
     {
       title: "position",
       dataIndex: "position",
@@ -144,18 +173,8 @@ function JobTable() {
       key: "location",
       editable: true,
     },
-    {
-      title: "job Type",
-      dataIndex: "jobType",
-      key: "jobType",
-      editable: true,
-    },
-    {
-      title: "apply date",
-      dataIndex: "date",
-      key: "date",
-      editable: true,
-    },
+    { title: "job Type", dataIndex: "jobType", key: "jobType", editable: true },
+    { title: "apply date", dataIndex: "date", key: "date", editable: true },
     {
       title: "action",
       dataIndex: "action",
@@ -171,6 +190,21 @@ function JobTable() {
             <CustomButton text="delete" danger />
           </Popconfirm>
         ) : null,
+    },
+    {
+      title: "Tag",
+      key: "tag",
+      dataIndex: "tag",
+      editable: true,
+      render: (tag) => {
+        const normalizedTag = tag?.toLowerCase();
+        const color = tagColors[normalizedTag];
+        return (
+          <Tag color={color} key={normalizedTag}>
+            {normalizedTag}
+          </Tag>
+        );
+      },
     },
   ];
 
@@ -188,37 +222,10 @@ function JobTable() {
     };
   });
 
-  const navigate = useNavigate();
-
   const rowSelection = {
-    onChange: (selectedRowKeys) => {
-      setSelectedRowKeys(selectedRowKeys);
+    onChange: (selectedKeys) => {
+      setSelectedRowKeys(selectedKeys);
     },
-  };
-
-  const [open, setOpen] = useState(false);
-  const [jobData, setJobData] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setJobData(RetrieveLocalStorage());
-    setLoading(false);
-  }, []);
-
-  const refreshJobData = () => {
-    setJobData(RetrieveLocalStorage());
-  };
-
-  const showModal = () => {
-    setOpen(true);
-  };
-
-  const handleDelete = (key) => {
-    console.log(key);
-    const newData = jobData.filter((job) => !key.includes(job.key));
-    setJobData(newData);
-    UpdateLocalStorage(newData);
   };
 
   return (
@@ -227,26 +234,41 @@ function JobTable() {
         <div>Loading...</div>
       ) : jobData.length ? (
         <div>
-          <ConfigProvider
-            theme={{
-              algorithm: theme.darkAlgorithm,
-            }}
-          >
+          <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
             <TableButtons>
-              <CustomButton text="add job" onClick={() => showModal()} />
-              <CustomButton text="edit checked" />
-              {selectedRowKeys.length && (
-                <Popconfirm
-                  title="are you sure?"
-                  placement="bottom"
-                  okText="yes"
-                  cancelText="cancel"
-                  onConfirm={() => handleDelete(selectedRowKeys)}
-                >
-                  <CustomButton text="delete checked" />
-                </Popconfirm>
+              <CustomButton
+                text="add job"
+                onClick={() => setOpenAddModal(true)}
+              />
+
+              {selectedRowKeys.length > 0 && (
+                <>
+                  {selectedRowKeys.length === 1 && (
+                    <CustomButton
+                      text="edit checked"
+                      onClick={() => {
+                        const selectedData = jobData.find((item) =>
+                          selectedRowKeys.includes(item.key)
+                        );
+                        setSelectedEditData(selectedData);
+                        setOpenEditModal(true);
+                      }}
+                    />
+                  )}
+
+                  <Popconfirm
+                    title="are you sure?"
+                    placement="bottom"
+                    okText="yes"
+                    cancelText="cancel"
+                    onConfirm={() => handleDelete(selectedRowKeys)}
+                  >
+                    <CustomButton text="delete checked" />
+                  </Popconfirm>
+                </>
               )}
             </TableButtons>
+
             <Table
               components={{
                 body: {
@@ -267,9 +289,16 @@ function JobTable() {
           <CustomButton text="add first job" onClick={() => navigate("/")} />
         </EmptyData>
       )}
+
       <AddJobModal
-        open={open}
-        setOpen={setOpen}
+        open={openAddModal}
+        setOpen={setOpenAddModal}
+        refreshJobData={refreshJobData}
+      />
+      <EditJobModal
+        open={openEditModal}
+        setOpen={setOpenEditModal}
+        selectedEditData={selectedEditData}
         refreshJobData={refreshJobData}
       />
     </TableContainer>

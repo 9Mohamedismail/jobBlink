@@ -27,7 +27,7 @@ const CustomForm = styled(Form)`
     border-color: #ff4d4f !important;
   }
 `;
-function AddJobForm({ form, onFinish }) {
+function EditJobForm({ form, onFinish }) {
   return (
     <CustomForm
       layout="horizontal"
@@ -61,15 +61,6 @@ function AddJobForm({ form, onFinish }) {
           <Option value="FREELANCE">freelance</Option>
         </Select>
       </Form.Item>
-      <Form.Item label="tag" name="tag" rules={[{ required: true }]}>
-        <Select>
-          <Option value="applied">applied</Option>
-          <Option value="interviewing">interviewing</Option>
-          <Option value="offer">offer</Option>
-          <Option value="rejected">rejected</Option>
-          <Option value="followup">follow Up</Option>
-        </Select>
-      </Form.Item>
       <Form.Item label="date applied" name="date" rules={[{ required: true }]}>
         <DatePicker format="M-DD-YYYY" placeholder="" />
       </Form.Item>
@@ -77,4 +68,4 @@ function AddJobForm({ form, onFinish }) {
   );
 }
 
-export default AddJobForm;
+export default EditJobForm;
