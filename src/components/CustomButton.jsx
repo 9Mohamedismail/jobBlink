@@ -30,7 +30,7 @@ const Button = styled.button`
 const CustomButton = React.forwardRef(
   (
     { text, onClick = () => {}, danger = false, icon, loading, disabled },
-    ref
+    ref,
   ) => {
     return (
       <Button
@@ -44,7 +44,8 @@ const CustomButton = React.forwardRef(
         {icon}
       </Button>
     );
-  }
+  },
 );
 
+CustomButton.displayName = "CustomButton";
 export default CustomButton;

@@ -1,5 +1,4 @@
 import { React, useState } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import { AddLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
 import CustomButton from "./CustomButton";
@@ -88,6 +87,7 @@ function InputBar({ setVisible }) {
       setVisible(true);
       setInputUrl("");
     } catch (error) {
+      console.error(error);
       setUrlErrorType(urlType);
       setOpen(true);
     } finally {

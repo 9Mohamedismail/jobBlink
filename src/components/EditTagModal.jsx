@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Modal, Form, Select, message } from "antd";
+import { Modal, Form } from "antd";
 import CustomButton from "./CustomButton";
 import { UpdateLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
 import EditTagForm from "./EditTagForm";
 import styled from "styled-components";
-
-const { Option } = Select;
 
 const CustomModal = styled(Modal)`
   .ant-modal-content,

@@ -1,3 +1,4 @@
+import React from "react";
 import JobTable from "../components/JobTable";
 import styled from "styled-components";
 

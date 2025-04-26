@@ -9,7 +9,6 @@ import {
   theme,
   Tag,
   Dropdown,
-  Menu,
 } from "antd";
 import CustomButton from "./CustomButton";
 import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
@@ -61,7 +60,7 @@ const TableContainer = styled.div`
 
 const EditableContext = React.createContext(null);
 
-const EditableRow = ({ index, ...props }) => {
+const EditableRow = ({ ...props }) => {
   const [form] = Form.useForm();
   return (
     <Form form={form} component={false}>
@@ -293,7 +292,7 @@ function JobTable() {
                 text="edit job"
                 onClick={() => {
                   const selectedData = jobData.find((item) =>
-                    selectedRowKeys.includes(item.key)
+                    selectedRowKeys.includes(item.key),
                   );
                   openModal("edit", selectedData);
                 }}
@@ -317,7 +316,7 @@ function JobTable() {
                 text="change tag(s)"
                 onClick={() => {
                   const selectedData = jobData.filter((item) =>
-                    selectedRowKeys.includes(item.key)
+                    selectedRowKeys.includes(item.key),
                   );
                   openModal("editTag", selectedData);
                 }}

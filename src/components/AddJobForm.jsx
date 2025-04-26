@@ -1,3 +1,4 @@
+import React from "react";
 import { Form, Input, Select, DatePicker } from "antd";
 import styled from "styled-components";
 
@@ -28,6 +29,7 @@ const CustomForm = styled(Form)`
   }
 `;
 function AddJobForm({ form, onFinish }) {
+  const { Option } = Select;
   return (
     <CustomForm
       layout="horizontal"

@@ -1,3 +1,4 @@
+import React from "react";
 import { Form, Select } from "antd";
 import styled from "styled-components";
 
@@ -28,6 +29,7 @@ const CustomForm = styled(Form)`
   }
 `;
 function EditTagForm({ form, onFinish, selectedRows }) {
+  const { Option } = Select;
   return (
     <CustomForm
       layout="vertical"
