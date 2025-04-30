@@ -34,6 +34,7 @@ const supportedJobs = {
   "boards.greenhouse.io": "GREENHOUSE",
   "myworkdayjobs.com": "WORKDAY",
   "jobs.lever.co": "LEVER",
+  "jobs.ashbyhq.com": "ASHBY",
 };
 
 function InputBar({ setVisible }) {

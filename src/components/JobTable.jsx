@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { HiLink, HiPencilAlt } from "react-icons/hi";
 import {
   Empty,
   Table,
@@ -292,7 +293,7 @@ function JobTable() {
                 text="edit job"
                 onClick={() => {
                   const selectedData = jobData.find((item) =>
-                    selectedRowKeys.includes(item.key),
+                    selectedRowKeys.includes(item.key)
                   );
                   openModal("edit", selectedData);
                 }}
@@ -316,7 +317,7 @@ function JobTable() {
                 text="change tag(s)"
                 onClick={() => {
                   const selectedData = jobData.filter((item) =>
-                    selectedRowKeys.includes(item.key),
+                    selectedRowKeys.includes(item.key)
                   );
                   openModal("editTag", selectedData);
                 }}
@@ -341,7 +342,18 @@ function JobTable() {
       ) : (
         <EmptyData>
           <Empty />
-          <CustomButton text="add first job" onClick={() => navigate("/")} />
+          <TableButtons>
+            <CustomButton
+              text="add via URL"
+              onClick={() => navigate("/")}
+              icon={<HiLink size={14} />}
+            />
+            <CustomButton
+              text="add manually"
+              onClick={() => openModal("add")}
+              icon={<HiPencilAlt size={14} />}
+            />
+          </TableButtons>
         </EmptyData>
       )}
 

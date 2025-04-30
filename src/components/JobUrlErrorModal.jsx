@@ -27,7 +27,7 @@ const getErrorMessage = (urlErrorType) => {
     return "looks like i don’t recognize this link, it might be invalid or that service isn't supported yet. mind checking it and trying again?";
   }
 
-  return `looks like you used a ${urlErrorType.toLowerCase()} link. that service is supported but something went wrong with the link. it might be invalid or the job’s no longer available. mind checking it or grabbing a different link?`;
+  return `looks like you used a ${urlErrorType.toLowerCase()} link but something went wrong. it might be invalid or the job’s no longer available. mind checking it or grabbing a different link?`;
 };
 
 const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
