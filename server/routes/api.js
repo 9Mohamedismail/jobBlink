@@ -16,28 +16,49 @@ async function scrapeJobData(url) {
     const page = await browser.newPage();
 
     await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     );
 
     await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
 
-    const jobData = await page.evaluate(() => {
-      const script = document.querySelector(
-        'script[type="application/ld+json"]',
-      );
-      if (!script) {
-        throw new Error("KNOWN_URL_NO_JOB_DATA");
-      }
-      return JSON.parse(script.innerText);
-    });
+    const isGreenhouse = url.includes("greenhouse.io");
 
-    return {
-      company: jobData?.hiringOrganization?.name ?? "",
-      position: jobData?.title ?? jobData?.identifier?.name ?? "",
-      location: jobData?.jobLocation?.address?.addressLocality ?? "",
-      jobType: jobData?.employmentType.replace(/_/g, " ") ?? "",
-      tag: "applied",
-    };
+    if (isGreenhouse) {
+      const company = new URL(url).pathname.split("/")[1];
+      return await page.evaluate((companyFromUrl) => {
+        const position =
+          document.querySelector('meta[property="og:title"]')?.content || "N/A";
+        const location =
+          document.querySelector('meta[property="og:description"]')?.content ||
+          "N/A";
+
+        return {
+          company: companyFromUrl,
+          position,
+          location,
+          jobType: "N/A",
+          tag: "applied",
+        };
+      }, company);
+    } else {
+      const jobData = await page.evaluate(() => {
+        const script = document.querySelector(
+          'script[type="application/ld+json"]'
+        );
+        if (!script) {
+          throw new Error("KNOWN_URL_NO_JOB_DATA");
+        }
+        return JSON.parse(script.innerText);
+      });
+
+      return {
+        company: jobData?.hiringOrganization?.name ?? "N/A",
+        position: jobData?.title ?? jobData?.identifier?.name ?? "N/A",
+        location: jobData?.jobLocation?.address?.addressLocality ?? "N/A",
+        jobType: jobData?.employmentType?.replace(/_/g, " ") ?? "N/A",
+        tag: "applied",
+      };
+    }
   } finally {
     if (browser) await browser.close();
   }

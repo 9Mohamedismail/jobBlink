@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const handleLeverURL = async (companyName, jobId) => {
   const { data } = await axios.get(
-    `https://api.lever.co/v0/postings/${companyName}/${jobId}`,
+    `https://api.lever.co/v0/postings/${companyName}/${jobId}`
   );
 
   return {
@@ -10,5 +10,6 @@ export const handleLeverURL = async (companyName, jobId) => {
     position: data.text,
     location: data.categories.location,
     jobType: data.categories.commitment,
+    tag: "applied",
   };
 };
