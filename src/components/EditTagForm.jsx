@@ -1,33 +1,7 @@
 import React from "react";
 import { Form, Select } from "antd";
-import styled from "styled-components";
+import { CustomForm } from "../styles/FormStyles";
 
-const CustomForm = styled(Form)`
-  .ant-form-item-label > label {
-    color: #e1e1e1;
-  }
-
-  .ant-input,
-  .ant-select,
-  .ant-select-selector {
-    background-color: black !important;
-    color: #e1e1e1 !important;
-    border-color: #383838 !important;
-  }
-
-  .ant-input:hover,
-  .ant-input:focus,
-  .ant-select-selector:hover,
-  .ant-select-selector:focus {
-    background-color: black !important;
-    color: #e1e1e1 !important;
-    border-color: #e1e1e1 !important;
-  }
-
-  .ant-form-item-has-error .ant-input {
-    border-color: #ff4d4f !important;
-  }
-`;
 function EditTagForm({ form, onFinish, selectedRows }) {
   const { Option } = Select;
   return (

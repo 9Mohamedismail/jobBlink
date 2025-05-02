@@ -5,7 +5,7 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 const router = express.Router();
 puppeteer.use(StealthPlugin());
 
-async function scrapeJobData(url) {
+async function scrapeJobData(url, tag) {
   let browser;
   try {
     browser = await puppeteer.launch({
@@ -24,22 +24,29 @@ async function scrapeJobData(url) {
     const isGreenhouse = url.includes("greenhouse.io");
 
     if (isGreenhouse) {
-      const company = new URL(url).pathname.split("/")[1];
-      return await page.evaluate((companyFromUrl) => {
-        const position =
-          document.querySelector('meta[property="og:title"]')?.content || "N/A";
-        const location =
-          document.querySelector('meta[property="og:description"]')?.content ||
-          "N/A";
+      const pathnameParts = new URL(url).pathname.split("/");
+      const company = pathnameParts[1] || "N/A";
 
-        return {
-          company: companyFromUrl,
-          position,
-          location,
-          jobType: "N/A",
-          tag: "applied",
-        };
-      }, company);
+      return await page.evaluate(
+        (companyFromUrl, tagValue) => {
+          const position =
+            document.querySelector('meta[property="og:title"]')?.content ||
+            "N/A";
+          const location =
+            document.querySelector('meta[property="og:description"]')
+              ?.content || "N/A";
+
+          return {
+            company: companyFromUrl,
+            position,
+            location,
+            jobType: "N/A",
+            tag: tagValue,
+          };
+        },
+        company,
+        tag
+      );
     } else {
       const jobData = await page.evaluate(() => {
         const script = document.querySelector(
@@ -48,15 +55,19 @@ async function scrapeJobData(url) {
         if (!script) {
           throw new Error("KNOWN_URL_NO_JOB_DATA");
         }
-        return JSON.parse(script.innerText);
+        try {
+          return JSON.parse(script.innerText);
+        } catch (e) {
+          throw new Error("FAILED_TO_PARSE_LD_JSON");
+        }
       });
 
       return {
-        company: jobData?.hiringOrganization?.name ?? "N/A",
-        position: jobData?.title ?? jobData?.identifier?.name ?? "N/A",
-        location: jobData?.jobLocation?.address?.addressLocality ?? "N/A",
-        jobType: jobData?.employmentType?.replace(/_/g, " ") ?? "N/A",
-        tag: "applied",
+        company: jobData?.hiringOrganization?.name || "N/A",
+        position: jobData?.title || jobData?.identifier?.name || "N/A",
+        location: jobData?.jobLocation?.address?.addressLocality || "N/A",
+        jobType: jobData?.employmentType?.replace(/_/g, " ") || "N/A",
+        tag: tag,
       };
     }
   } finally {
@@ -66,12 +77,29 @@ async function scrapeJobData(url) {
 
 router.get("/job", async (req, res) => {
   const url = decodeURI(req.query.url);
+  const tag = req.query.tag || "applied";
+
+  if (!url || !/^https?:\/\/.+/.test(url)) {
+    return res.status(400).json({ error: "Invalid or missing URL." });
+  }
+
   try {
-    const data = await scrapeJobData(url);
+    const data = await scrapeJobData(url, tag);
     res.json(data);
   } catch (err) {
     console.error("Error fetching job data:", err.message);
-    res.status(500).json({ error: err.message });
+
+    if (err.message === "KNOWN_URL_NO_JOB_DATA") {
+      return res.status(400).json({ error: "No job data found on page." });
+    }
+
+    if (err.message === "FAILED_TO_PARSE_LD_JSON") {
+      return res
+        .status(400)
+        .json({ error: "Job data format could not be parsed." });
+    }
+
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 

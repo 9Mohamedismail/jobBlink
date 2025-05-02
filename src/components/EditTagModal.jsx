@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import { Modal, Form } from "antd";
+import { Form } from "antd";
 import CustomButton from "./CustomButton";
 import { UpdateLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
 import EditTagForm from "./EditTagForm";
-import styled from "styled-components";
-
-const CustomModal = styled(Modal)`
-  .ant-modal-content,
-  .ant-modal-header,
-  .ant-modal-footer {
-    background-color: black;
-    color: #e1e1e1;
-  }
-`;
+import { CustomModal } from "../styles/FormStyles";
 
 function EditTagModal({ open, setOpen, selectedRows, refreshJobData }) {
   const [form] = Form.useForm();

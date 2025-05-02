@@ -1,19 +1,9 @@
 import React, { useState } from "react";
 import { Form } from "antd";
-import { Modal } from "antd";
-import AddJobForm from "./AddJobForm";
+import JobForm from "./JobForm";
 import { RetrieveLocalStorage, AddLocalStorage } from "../utils/jobStorage";
-import styled from "styled-components";
 import CustomButton from "./CustomButton";
-
-const CustomModal = styled(Modal)`
-  .ant-modal-content,
-  .ant-modal-header,
-  .ant-modal-footer {
-    background-color: black;
-    color: #e1e1e1;
-  }
-`;
+import { CustomModal } from "../styles/FormStyles";
 
 const AddJobModal = ({ open, setOpen, refreshJobData }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -63,7 +53,7 @@ const AddJobModal = ({ open, setOpen, refreshJobData }) => {
           />,
         ]}
       >
-        <AddJobForm form={form} onFinish={onFinish} />
+        <JobForm form={form} onFinish={onFinish} />
       </CustomModal>
     </>
   );

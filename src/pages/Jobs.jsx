@@ -11,7 +11,7 @@ const Container = styled.div`
 function Jobs() {
   return (
     <Container>
-      <JobTable />;
+      <JobTable />
     </Container>
   );
 }
