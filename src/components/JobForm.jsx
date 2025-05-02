@@ -1,11 +1,11 @@
 import React from "react";
 import { Form, Input, Select, DatePicker } from "antd";
-import { CustomForm } from "../styles/FormStyles";
+import { StyledForm } from "../styles/FormStyles";
 
 function JobForm({ form, onFinish }) {
   const { Option } = Select;
   return (
-    <CustomForm
+    <StyledForm
       layout="horizontal"
       form={form}
       onFinish={onFinish}
@@ -49,7 +49,7 @@ function JobForm({ form, onFinish }) {
       <Form.Item label="date applied" name="date" rules={[{ required: true }]}>
         <DatePicker format="M-DD-YYYY" placeholder="" />
       </Form.Item>
-    </CustomForm>
+    </StyledForm>
   );
 }
 

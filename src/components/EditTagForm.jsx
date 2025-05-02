@@ -1,11 +1,11 @@
 import React from "react";
 import { Form, Select } from "antd";
-import { CustomForm } from "../styles/FormStyles";
+import { StyledForm } from "../styles/FormStyles";
 
 function EditTagForm({ form, onFinish, selectedRows }) {
   const { Option } = Select;
   return (
-    <CustomForm
+    <StyledForm
       layout="vertical"
       form={form}
       onFinish={onFinish}
@@ -24,7 +24,7 @@ function EditTagForm({ form, onFinish, selectedRows }) {
           <Option value="followup">Follow Up</Option>
         </Select>
       </Form.Item>
-    </CustomForm>
+    </StyledForm>
   );
 }
 

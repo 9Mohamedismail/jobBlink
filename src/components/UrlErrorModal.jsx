@@ -30,7 +30,7 @@ const getErrorMessage = (urlErrorType) => {
   return `looks like you used a ${urlErrorType.toLowerCase()} link but something went wrong. it might be invalid or the job’s no longer available. mind checking it or grabbing a different link?`;
 };
 
-const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
+const UrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
   const handleCancel = () => {
     setOpen(false);
     setUrlErrorType("");
@@ -56,4 +56,4 @@ const JobUrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
     </>
   );
 };
-export default JobUrlErrorModal;
+export default UrlErrorModal;

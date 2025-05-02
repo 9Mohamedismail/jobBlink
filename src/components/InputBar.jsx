@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 import { FaPaste } from "react-icons/fa";
 import { handleLeverURL } from "../utils/handleLeverURL";
 import { handleURL } from "../utils/handleURL";
-import JobErrorModal from "./JobUrlErrorModal";
+import UrlErrorModal from "./UrlErrorModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -126,7 +126,7 @@ function InputBar({ setVisible }) {
       </ButtonWrapper>
 
       {open && (
-        <JobErrorModal
+        <UrlErrorModal
           open={open}
           setOpen={setOpen}
           urlErrorType={urlErrorType}

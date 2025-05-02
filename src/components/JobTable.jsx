@@ -15,8 +15,7 @@ import CustomButton from "./CustomButton";
 import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
-import AddJobModal from "./AddJobModal";
-import EditJobModal from "./EditJobModal";
+import JobModal from "./JobModal";
 import EditTagModal from "./EditTagModal";
 import { MoreOutlined } from "@ant-design/icons";
 
@@ -358,17 +357,14 @@ function JobTable() {
       )}
 
       {/* Modals */}
-      <AddJobModal
-        open={activeModal === "add"}
+      <JobModal
+        open={activeModal === "add" || activeModal === "edit"}
         setOpen={closeModal}
         refreshJobData={refreshJobData}
+        mode={activeModal === "add" ? "add" : "edit"}
+        selectedData={activeModal === "edit" ? modalData : null}
       />
-      <EditJobModal
-        open={activeModal === "edit"}
-        setOpen={closeModal}
-        selectedEditData={modalData}
-        refreshJobData={refreshJobData}
-      />
+
       <EditTagModal
         open={activeModal === "editTag"}
         setOpen={closeModal}

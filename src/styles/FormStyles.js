@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Form, Modal } from "antd";
 
-export const CustomForm = styled(Form)`
+export const StyledForm = styled(Form)`
   .ant-form-item-label > label {
     color: #e1e1e1;
   }
@@ -28,7 +28,7 @@ export const CustomForm = styled(Form)`
   }
 `;
 
-export const CustomModal = styled(Modal)`
+export const StyledModal = styled(Modal)`
   .ant-modal-content,
   .ant-modal-header,
   .ant-modal-footer {
