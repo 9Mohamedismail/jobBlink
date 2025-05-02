@@ -16,7 +16,7 @@ import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import JobModal from "./JobModal";
-import EditTagModal from "./EditTagModal";
+import TagUpdateForm from "./TagUpdateForm";
 import { MoreOutlined } from "@ant-design/icons";
 
 const TableButtons = styled.div`
@@ -365,7 +365,7 @@ function JobTable() {
         selectedData={activeModal === "edit" ? modalData : null}
       />
 
-      <EditTagModal
+      <TagUpdateForm
         open={activeModal === "editTag"}
         setOpen={closeModal}
         selectedRows={modalData || []}

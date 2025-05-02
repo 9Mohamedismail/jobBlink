@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Select } from "antd";
 import { StyledForm } from "../styles/FormStyles";
 
-function EditTagForm({ form, onFinish, selectedRows }) {
+function TagEditForm({ form, onFinish, selectedRows }) {
   const { Option } = Select;
   return (
     <StyledForm
@@ -28,4 +28,4 @@ function EditTagForm({ form, onFinish, selectedRows }) {
   );
 }
 
-export default EditTagForm;
+export default TagEditForm;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import styled from "styled-components";
 import logo from "../assets/Logo.png";
 import {
@@ -11,8 +11,11 @@ import {
 
 function NavBar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const NavBar = styled.div`
+  const isActive = (path) => location.pathname === path;
+
+  const NavBarWrapper = styled.div`
     display: grid;
     align-content: space-between;
     border: solid;
@@ -24,7 +27,6 @@ function NavBar() {
 
   const Logo = styled.img`
     width: 100%;
-    height: 100;
   `;
 
   const Tab = styled.div`
@@ -32,6 +34,8 @@ function NavBar() {
     color: #818181;
     cursor: pointer;
     border-radius: 10px;
+    background-color: ${(props) =>
+      props.$active ? "rgba(225,225,225,0.1)" : "transparent"};
     border: solid #101010;
     &:hover {
       background-color: rgba(225, 225, 225, 0.1);
@@ -42,29 +46,32 @@ function NavBar() {
   `;
 
   return (
-    <NavBar>
+    <NavBarWrapper>
       <div>
         <Logo src={logo} />
-        <Tab onClick={() => navigate("/")}>
+        <Tab onClick={() => navigate("/")} $active={isActive("/")}>
           <HiLink size={28} />
           <p> add </p>
         </Tab>
-        <Tab onClick={() => navigate("/jobs")}>
+        <Tab onClick={() => navigate("/jobs")} $active={isActive("/jobs")}>
           <HiBriefcase size={28} />
           <p> jobs </p>
         </Tab>
       </div>
       <div>
-        <Tab onClick={() => navigate("/settings")}>
+        <Tab
+          onClick={() => navigate("/settings")}
+          $active={isActive("/settings")}
+        >
           <HiOutlineCog size={28} />
           <p> settings </p>
         </Tab>
-        <Tab onClick={() => navigate("/about")}>
+        <Tab onClick={() => navigate("/about")} $active={isActive("/about")}>
           <HiOutlineInformationCircle size={28} />
           <p> about </p>
         </Tab>
       </div>
-    </NavBar>
+    </NavBarWrapper>
   );
 }
 
