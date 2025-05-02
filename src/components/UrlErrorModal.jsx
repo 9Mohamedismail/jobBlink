@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import styled from "styled-components";
 import CustomButton from "./CustomButton";
 
-const UrlModal = styled(Modal)`
+const StyledErrorModal = styled(Modal)`
   .ant-modal-content {
     color: #e1e1e1;
     text-align: center;
@@ -30,30 +30,18 @@ const getErrorMessage = (urlErrorType) => {
   return `looks like you used a ${urlErrorType.toLowerCase()} link but something went wrong. it might be invalid or the job’s no longer available. mind checking it or grabbing a different link?`;
 };
 
-const UrlErrorModal = ({ open, setOpen, urlErrorType, setUrlErrorType }) => {
-  const handleCancel = () => {
-    setOpen(false);
-    setUrlErrorType("");
-  };
-
-  console.log(urlErrorType);
-
+const UrlErrorModal = ({ open, onClose, urlErrorType }) => {
   return (
-    <>
-      <UrlModal
-        closable={false}
-        open={open}
-        onCancel={handleCancel}
-        centered
-        footer={[
-          <CustomButton key="cancel" onClick={handleCancel} text="okay" />,
-        ]}
-      >
-        <p>
-          <p>{getErrorMessage(urlErrorType)}</p>
-        </p>
-      </UrlModal>
-    </>
+    <StyledErrorModal
+      closable={false}
+      open={open}
+      onCancel={onClose}
+      centered
+      footer={[<CustomButton key="cancel" onClick={onClose} text="okay" />]}
+    >
+      <p>{getErrorMessage(urlErrorType)}</p>
+    </StyledErrorModal>
   );
 };
+
 export default UrlErrorModal;

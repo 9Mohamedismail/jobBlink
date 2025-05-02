@@ -40,8 +40,7 @@ const supportedJobs = {
 function InputBar({ setVisible }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
-  const [open, setOpen] = useState(false);
-  const [urlErrorType, setUrlErrorType] = useState("");
+  const [urlErrorType, setUrlErrorType] = useState(null);
 
   const handleChange = (e) => {
     setInputUrl(e.target.value);
@@ -65,7 +64,6 @@ function InputBar({ setVisible }) {
 
       if (urlType === "INVALID_URL") {
         setUrlErrorType(urlType);
-        setOpen(true);
         setConfirmLoading(false);
         return;
       }
@@ -90,7 +88,6 @@ function InputBar({ setVisible }) {
     } catch (error) {
       console.error(error);
       setUrlErrorType(urlType);
-      setOpen(true);
     } finally {
       setConfirmLoading(false);
     }
@@ -100,7 +97,6 @@ function InputBar({ setVisible }) {
     setInputUrl(await navigator.clipboard.readText());
   };
 
-  console.log(inputUrl);
   return (
     <>
       <Wrapper>
@@ -125,12 +121,11 @@ function InputBar({ setVisible }) {
         />
       </ButtonWrapper>
 
-      {open && (
+      {urlErrorType && (
         <UrlErrorModal
-          open={open}
-          setOpen={setOpen}
+          open={!!urlErrorType}
+          onClose={() => setUrlErrorType(null)}
           urlErrorType={urlErrorType}
-          setUrlErrorType={setUrlErrorType}
         />
       )}
     </>
