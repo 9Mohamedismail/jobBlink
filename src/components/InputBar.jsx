@@ -43,7 +43,7 @@ function InputBar({ setVisible }) {
       setUrlErrorType,
       setConfirmLoading,
       setVisible,
-      setInputUrl
+      setInputUrl,
     );
   };
 

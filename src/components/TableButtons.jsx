@@ -30,7 +30,7 @@ const TableButtons = ({
         text="edit job"
         onClick={() => {
           const selectedData = jobData.find((item) =>
-            selectedRowKeys.includes(item.key)
+            selectedRowKeys.includes(item.key),
           );
           openModal("edit", selectedData);
         }}
@@ -54,7 +54,7 @@ const TableButtons = ({
         text="change tag(s)"
         onClick={() => {
           const selectedData = jobData.filter((item) =>
-            selectedRowKeys.includes(item.key)
+            selectedRowKeys.includes(item.key),
           );
           openModal("editTag", selectedData);
         }}

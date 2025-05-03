@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { HiLink, HiPencilAlt } from "react-icons/hi";
-import { Empty, Table, ConfigProvider, Popconfirm, theme } from "antd";
+import { Empty, Table, ConfigProvider, theme } from "antd";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 
@@ -11,7 +11,7 @@ import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
 
 import EditableCell from "./EditableCell";
 import EditableRow from "./EditableRow";
-import getColumns from "../utils/Columns";
+import getColumns from "./Columns";
 import TableButtons from "./TableButtons";
 
 const TableButtonsWrapper = styled.div`

@@ -45,7 +45,7 @@ const JobModal = ({
               ...values,
               date: values.date ? values.date.format("M/DD/YYYY") : null,
             }
-          : job
+          : job,
       );
       UpdateLocalStorage(updated);
     }
