@@ -24,6 +24,19 @@ async function scrapeJobData(url, tag) {
     const isGreenhouse = url.includes("greenhouse.io");
 
     if (isGreenhouse) {
+      const currentUrl = page.url();
+      if (currentUrl !== url) {
+        console.log(`Redirected from ${url} to ${currentUrl}`);
+
+        const redirectedPathParts = new URL(currentUrl).pathname.split("/");
+        if (
+          redirectedPathParts.length < 4 ||
+          !redirectedPathParts[3] ||
+          redirectedPathParts[3] === ""
+        ) {
+          throw new Error("KNOWN_URL_NO_JOB_DATA");
+        }
+      }
       const pathnameParts = new URL(url).pathname.split("/");
       const company = pathnameParts[1] || "N/A";
 

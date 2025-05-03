@@ -22,12 +22,11 @@ const StyledErrorModal = styled(Modal)`
   }
 `;
 
-const getErrorMessage = (urlErrorType) => {
-  if (urlErrorType === "INVALID_URL") {
-    return "looks like i don’t recognize this link, it might be invalid or that service isn't supported yet. mind checking it and trying again?";
-  }
-
-  return `looks like you used a ${urlErrorType.toLowerCase()} link but something went wrong. it might be invalid or the job’s no longer available. mind checking it or grabbing a different link?`;
+const ERROR_MESSAGES = {
+  INVALID_URL:
+    "looks like i don't recognize this link, it might be invalid or that service isn't supported yet. mind checking it and trying again?",
+  DEFAULT: (type) =>
+    `looks like you used a ${type.toLowerCase()} link but something went wrong. it might be invalid or the job's no longer available. mind checking it or grabbing a different link?`,
 };
 
 const UrlErrorModal = ({ open, onClose, urlErrorType }) => {
@@ -39,7 +38,11 @@ const UrlErrorModal = ({ open, onClose, urlErrorType }) => {
       centered
       footer={[<CustomButton key="cancel" onClick={onClose} text="okay" />]}
     >
-      <p>{getErrorMessage(urlErrorType)}</p>
+      <p>
+        {urlErrorType === "INVALID_URL"
+          ? ERROR_MESSAGES.INVALID_URL
+          : ERROR_MESSAGES.DEFAULT(urlErrorType)}
+      </p>
     </StyledErrorModal>
   );
 };

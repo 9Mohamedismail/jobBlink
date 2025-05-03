@@ -1,11 +1,9 @@
 import { React, useState } from "react";
 import styled from "styled-components";
-import { AddLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
 import CustomButton from "./CustomButton";
 import { FaPaste } from "react-icons/fa";
-import { handleLeverURL } from "../utils/handleLeverURL";
-import { handleURL } from "../utils/handleURL";
 import UrlErrorModal from "./UrlErrorModal";
+import { parseAndSaveJob } from "../utils/parseAndSaveJob";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,13 +28,6 @@ const ButtonWrapper = styled.div`
   width: 37%;
 `;
 
-const supportedJobs = {
-  "boards.greenhouse.io": "GREENHOUSE",
-  "myworkdayjobs.com": "WORKDAY",
-  "jobs.lever.co": "LEVER",
-  "jobs.ashbyhq.com": "ASHBY",
-};
-
 function InputBar({ setVisible }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [inputUrl, setInputUrl] = useState("");
@@ -47,50 +38,13 @@ function InputBar({ setVisible }) {
   };
 
   const handleClick = async () => {
-    setConfirmLoading(true);
-    const formattedDate = new Date().toLocaleDateString();
-    let urlType = "INVALID_URL";
-
-    try {
-      const urlObj = new URL(inputUrl);
-      const host = urlObj.host;
-
-      for (const domain in supportedJobs) {
-        if (host.includes(domain)) {
-          urlType = supportedJobs[domain];
-          break;
-        }
-      }
-
-      if (urlType === "INVALID_URL") {
-        setUrlErrorType(urlType);
-        setConfirmLoading(false);
-        return;
-      }
-
-      let jobData = "";
-      if (urlType === "LEVER") {
-        const splitURL = inputUrl.split("/");
-        jobData = await handleLeverURL(splitURL[3], splitURL[4]);
-      } else {
-        const encodedUrl = encodeURIComponent(inputUrl);
-        jobData = await handleURL(encodedUrl);
-      }
-
-      AddLocalStorage({
-        ...jobData,
-        key: RetrieveLocalStorage().length,
-        date: formattedDate,
-        url: inputUrl,
-      });
-      setVisible(true);
-      setInputUrl("");
-    } catch (error) {
-      console.error(error);
-      setUrlErrorType(urlType);
-    } finally {
-      setConfirmLoading(false);
-    }
+    await parseAndSaveJob(
+      inputUrl,
+      setUrlErrorType,
+      setConfirmLoading,
+      setVisible,
+      setInputUrl
+    );
   };
 
   const handlePaste = async () => {
