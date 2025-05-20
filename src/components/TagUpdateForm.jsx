@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Form } from "antd";
 import CustomModal from "./CustomModal";
 import TagEditForm from "./TagEditForm";
-import { UpdateLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
+import {
+  UpdateLocalStorage,
+  RetrieveLocalStorage,
+} from "../utils/localStorage";
 
 function TagUpdateForm({ open, setOpen, selectedRows, refreshJobData }) {
   const [form] = Form.useForm();
@@ -10,15 +13,15 @@ function TagUpdateForm({ open, setOpen, selectedRows, refreshJobData }) {
 
   const onFinish = ({ newTag }) => {
     setConfirmLoading(true);
-    const allJobs = RetrieveLocalStorage();
+    const allJobs = RetrieveLocalStorage("jobData");
 
     const updatedJobs = allJobs.map((job) =>
       selectedRows.some((selected) => selected.key === job.key)
         ? { ...job, tag: newTag }
-        : job,
+        : job
     );
 
-    UpdateLocalStorage(updatedJobs);
+    UpdateLocalStorage("jobData", updatedJobs);
 
     setTimeout(() => {
       refreshJobData();

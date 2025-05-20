@@ -7,7 +7,10 @@ import styled from "styled-components";
 import CustomButton from "./CustomButton";
 import JobModal from "./JobModal";
 import TagUpdateForm from "./TagUpdateForm";
-import { RetrieveLocalStorage, UpdateLocalStorage } from "../utils/jobStorage";
+import {
+  RetrieveLocalStorage,
+  UpdateLocalStorage,
+} from "../utils/localStorage";
 
 import EditableCell from "./EditableCell";
 import EditableRow from "./EditableRow";
@@ -24,6 +27,7 @@ const EmptyData = styled.div`
   .ant-empty-description {
     color: #e1e1e1;
   }
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,7 +41,7 @@ const TableContainer = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  display: flex;
+
   width: 100%;
   height: 100%;
 
@@ -60,14 +64,30 @@ function JobTable() {
   const [jobData, setJobData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showRejected, setShowRejected] = useState(true);
 
   useEffect(() => {
-    setJobData(RetrieveLocalStorage());
+    const settings = RetrieveLocalStorage("settingsData");
+    const allJobs = RetrieveLocalStorage("jobData");
+
+    setShowRejected(settings.showRejectedJobs);
+
+    if (!settings.showRejectedJobs) {
+      setJobData(allJobs.filter((job) => !job.tag?.includes("rejected")));
+    } else {
+      setJobData(allJobs);
+    }
+
     setLoading(false);
   }, []);
 
   const refreshJobData = () => {
-    setJobData(RetrieveLocalStorage());
+    const allJobs = RetrieveLocalStorage("jobData");
+    if (!showRejected) {
+      setJobData(allJobs.filter((job) => !job.tag?.includes("rejected")));
+    } else {
+      setJobData(allJobs);
+    }
   };
 
   const openModal = (modalName, data = null) => {
@@ -83,7 +103,7 @@ function JobTable() {
   const handleDelete = (keys) => {
     const newData = jobData.filter((job) => !keys.includes(job.key));
     setJobData(newData);
-    UpdateLocalStorage(newData);
+    UpdateLocalStorage("jobData", newData);
   };
 
   const handleSave = (row) => {
@@ -91,7 +111,7 @@ function JobTable() {
     const index = newData.findIndex((item) => row.key === item.key);
     newData.splice(index, 1, { ...newData[index], ...row });
     setJobData(newData);
-    UpdateLocalStorage(newData);
+    UpdateLocalStorage("jobData", newData);
   };
 
   const columns = getColumns({ handleSave, openModal, handleDelete });

@@ -8,7 +8,11 @@ body {
 }
 
 * {
-  font-family: IBM Plex Mono, Noto Sans Mono Variable, Noto Sans Mono, monospace !important;
+  font-family:
+    IBM Plex Mono,
+    Noto Sans Mono Variable,
+    Noto Sans Mono,
+    monospace !important;
 }
 
 /* Dark theme for calendar in ant design form */

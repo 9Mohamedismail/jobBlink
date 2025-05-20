@@ -1,4 +1,4 @@
-import { AddLocalStorage, RetrieveLocalStorage } from "../utils/jobStorage";
+import { AddLocalStorage, RetrieveLocalStorage } from "../utils/localStorage";
 import { handleLeverURL } from "../utils/handleLeverURL";
 import { handleURL } from "../utils/handleURL";
 
@@ -14,7 +14,7 @@ export const parseAndSaveJob = async (
   setUrlErrorType,
   setConfirmLoading,
   setVisible,
-  setInputUrl,
+  setInputUrl
 ) => {
   setConfirmLoading(true);
   const formattedDate = new Date().toLocaleDateString();
@@ -48,7 +48,7 @@ export const parseAndSaveJob = async (
 
     AddLocalStorage({
       ...jobData,
-      key: RetrieveLocalStorage().length,
+      key: RetrieveLocalStorage("jobData").length,
       date: formattedDate,
       url: inputUrl,
     });

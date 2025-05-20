@@ -7,7 +7,7 @@ import {
   RetrieveLocalStorage,
   AddLocalStorage,
   UpdateLocalStorage,
-} from "../utils/jobStorage";
+} from "../utils/localStorage";
 
 const JobModal = ({
   open,
@@ -35,19 +35,19 @@ const JobModal = ({
       AddLocalStorage({
         ...values,
         date: values.date ? values.date.format("M/DD/YYYY") : null,
-        key: RetrieveLocalStorage().length,
+        key: RetrieveLocalStorage("jobData").length,
       });
     } else {
-      const updated = RetrieveLocalStorage().map((job) =>
+      const updated = RetrieveLocalStorage("jobData").map((job) =>
         job.key === selectedData.key
           ? {
               ...job,
               ...values,
               date: values.date ? values.date.format("M/DD/YYYY") : null,
             }
-          : job,
+          : job
       );
-      UpdateLocalStorage(updated);
+      UpdateLocalStorage("jobData", updated);
     }
 
     setTimeout(() => {
