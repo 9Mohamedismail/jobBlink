@@ -7,6 +7,7 @@ import {
   RetrieveLocalStorage,
   UpdateLocalStorage,
 } from "../utils/localStorage";
+import { handleExport } from "./ExportCSV";
 import { Popconfirm, ConfigProvider, theme } from "antd";
 
 const StyledModal = styled.div`
@@ -32,10 +33,13 @@ const Row = styled.div`
 `;
 
 function SettingsModal() {
+  const [jobData, setJobData] = useState([]);
   const [settingsData, setSettingsData] = useState({});
 
   useEffect(() => {
     setSettingsData(RetrieveLocalStorage("settingsData"));
+    const storedJobs = RetrieveLocalStorage("jobData");
+    setJobData(storedJobs);
   }, []);
 
   const updateSettings = (key, value) => {
@@ -67,7 +71,12 @@ function SettingsModal() {
 
       <Row>
         <p>export all jobs to CSV</p>
-        <CustomButton text="export" icon={<FiDownload size={14} />} />
+        <CustomButton
+          text="export"
+          icon={<FiDownload size={14} />}
+          onClick={() => handleExport(jobData)}
+          disabled={jobData.length === 0}
+        />
       </Row>
 
       <Row>

@@ -20,6 +20,7 @@ const AlertWrapper = styled.div`
   transition: all 0.3s ease;
   max-height: ${(props) => (props.visible ? "60px" : "0")};
   opacity: ${(props) => (props.visible ? 1 : 0)};
+  margin-top: 16px;
   margin-bottom: ${(props) => (props.visible ? "16px" : "0")};
 `;
 

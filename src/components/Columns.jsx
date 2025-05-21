@@ -28,7 +28,7 @@ const getColumns = ({ handleSave, openModal, handleDelete, sortJobsBy }) => {
       editable: true,
     },
     {
-      title: "job Description Link",
+      title: "job description link",
       dataIndex: "url",
       key: "url",
       editable: true,
@@ -40,7 +40,7 @@ const getColumns = ({ handleSave, openModal, handleDelete, sortJobsBy }) => {
       editable: true,
     },
     {
-      title: "job Type",
+      title: "job type",
       dataIndex: "jobType",
       key: "jobType",
       editable: true,
@@ -54,7 +54,7 @@ const getColumns = ({ handleSave, openModal, handleDelete, sortJobsBy }) => {
       defaultSortOrder: sortJobsBy,
     },
     {
-      title: "Tag",
+      title: "tag",
       key: "tag",
       dataIndex: "tag",
       editable: true,

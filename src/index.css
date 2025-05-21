@@ -182,3 +182,12 @@ body {
 .ant-form-item-has-error .ant-input:focus {
   border-color: #ff4d4f !important;
 }
+/* Remove sorted column background */
+.ant-table .ant-table-column-sort {
+  background-color: transparent !important;
+}
+
+/* Restore row hover background */
+.ant-table-tbody > tr:hover > td {
+  background-color: rgba(255, 255, 255, 0.08) !important; /* dark-mode hover */
+}
