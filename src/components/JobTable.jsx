@@ -65,12 +65,14 @@ function JobTable() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showRejected, setShowRejected] = useState(true);
+  const [sortJobsBy, setsortJobsBy] = useState("descend");
 
   useEffect(() => {
     const settings = RetrieveLocalStorage("settingsData");
     const allJobs = RetrieveLocalStorage("jobData");
 
     setShowRejected(settings.showRejectedJobs);
+    setsortJobsBy(settings.sortJobsBy);
 
     if (!settings.showRejectedJobs) {
       setJobData(allJobs.filter((job) => !job.tag?.includes("rejected")));
@@ -114,7 +116,12 @@ function JobTable() {
     UpdateLocalStorage("jobData", newData);
   };
 
-  const columns = getColumns({ handleSave, openModal, handleDelete });
+  const columns = getColumns({
+    handleSave,
+    openModal,
+    handleDelete,
+    sortJobsBy,
+  });
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedKeys) => setSelectedRowKeys(selectedKeys),
@@ -141,6 +148,7 @@ function JobTable() {
             </TableButtonsWrapper>
 
             <Table
+              rowKey="key"
               components={{
                 body: {
                   row: EditableRow,

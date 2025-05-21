@@ -10,9 +10,17 @@ const tagColors = {
   followup: "orange",
 };
 
-const getColumns = ({ handleSave, openModal, handleDelete }) =>
-  [
-    { title: "company", dataIndex: "company", key: "company", editable: true },
+const getColumns = ({ handleSave, openModal, handleDelete, sortJobsBy }) => {
+  console.log("sortJobsBy:", sortJobsBy); // ✅ Now this works properly
+
+  return [
+    {
+      title: "company",
+      dataIndex: "company",
+      key: "company",
+      editable: true,
+      sorter: (a, b) => a.company.localeCompare(b.company),
+    },
     {
       title: "position",
       dataIndex: "position",
@@ -31,8 +39,20 @@ const getColumns = ({ handleSave, openModal, handleDelete }) =>
       key: "location",
       editable: true,
     },
-    { title: "job Type", dataIndex: "jobType", key: "jobType", editable: true },
-    { title: "apply date", dataIndex: "date", key: "date", editable: true },
+    {
+      title: "job Type",
+      dataIndex: "jobType",
+      key: "jobType",
+      editable: true,
+    },
+    {
+      title: "apply date",
+      dataIndex: "date",
+      key: "date",
+      editable: true,
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
+      defaultSortOrder: sortJobsBy,
+    },
     {
       title: "Tag",
       key: "tag",
@@ -88,5 +108,6 @@ const getColumns = ({ handleSave, openModal, handleDelete }) =>
       }),
     };
   });
+};
 
 export default getColumns;

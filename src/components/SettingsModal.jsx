@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import styled from "styled-components";
-import { Switch } from "antd";
+import { Switch, Radio } from "antd";
 import CustomButton from "./CustomButton";
 import { FiDownload, FiTrash2 } from "react-icons/fi";
 import {
@@ -25,6 +25,10 @@ const Row = styled.div`
   align-items: center;
   margin-bottom: 24px;
   gap: 64px;
+
+  .ant-radio-wrapper {
+    color: #e1e1e1 !important;
+  }
 `;
 
 function SettingsModal() {
@@ -51,8 +55,14 @@ function SettingsModal() {
       </Row>
 
       <Row>
-        <p>dark mode</p>
-        <Switch defaultChecked />
+        <p>sort job dates on default by:</p>
+        <Radio.Group
+          onChange={(e) => updateSettings("sortJobsBy", e.target.value)}
+          value={settingsData.sortJobsBy}
+        >
+          <Radio value={"ascend"}>Ascending</Radio>
+          <Radio value={"descend"}>Descending</Radio>
+        </Radio.Group>
       </Row>
 
       <Row>

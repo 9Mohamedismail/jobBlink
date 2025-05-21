@@ -18,7 +18,7 @@ export const RetrieveLocalStorage = (key) => {
     if (!data) {
       const defaultSettings = {
         showRejectedJobs: true,
-        darkMode: true,
+        sortJobsBy: "descend",
       };
       localStorage.setItem("settingsData", JSON.stringify(defaultSettings));
       return defaultSettings;
