@@ -1,9 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import InputBar from "../components/InputBar";
-import { Alert } from "antd";
+import { Alert, Tooltip } from "antd";
 import styled from "styled-components";
 import logo from "../assets/Logo.png";
+import CustomButton from "../components/CustomButton";
 
 const Content = styled.div`
   display: flex;
@@ -27,6 +28,10 @@ const Logo = styled.img`
   margin-bottom: clamp(-100px, -5vw, -20px);
 `;
 
+const TooltipContent = styled.div`
+  text-align: center;
+`;
+
 function Add() {
   const [visible, setVisible] = useState(false);
 
@@ -39,6 +44,18 @@ function Add() {
 
   return (
     <Content>
+      <Tooltip
+        title={
+          <TooltipContent>
+            we currently support greenhouse, workday, lever, and ashby links.
+            more will come soon.
+          </TooltipContent>
+        }
+      >
+        <span>
+          <CustomButton text="supported websites" none />
+        </span>
+      </Tooltip>
       <AlertWrapper visible={visible}>
         <Alert message="job added" type="success" showIcon />
       </AlertWrapper>
