@@ -7,7 +7,7 @@ import {
   RetrieveLocalStorage,
   UpdateLocalStorage,
 } from "../utils/localStorage";
-import { handleExport } from "./ExportCSV";
+import { handleExport } from "../utils/exportToCSV";
 import { Popconfirm, ConfigProvider, theme } from "antd";
 
 const StyledModal = styled.div`
