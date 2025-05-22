@@ -37,9 +37,9 @@ function About() {
   return (
     <Container>
       <Content>
-        <Title>About JobBlink</Title>
+        <Title>About jobBlink</Title>
         <Paragraph>
-          JobBlink was born out of frustration. After spending hours applying to
+          jobBlink was born out of frustration. After spending hours applying to
           jobs, I found myself wasting even more time copying and pasting each
           job&rsquo;s title, company, location, and more into an Excel sheet —
           over and over again. It was tedious, inefficient, and took the joy out
@@ -47,10 +47,10 @@ function About() {
         </Paragraph>
         <Paragraph>That’s when I decided to build a better way.</Paragraph>
         <Paragraph>
-          JobBlink is a smart job tracking tool that makes it incredibly easy to
+          jobBlink is a smart job tracking tool that makes it incredibly easy to
           save and manage job applications. Instead of manually entering job
           info, you simply paste the link to a job posting from platforms like
-          Greenhouse, Workday, Lever, or Ashby — and JobBlink does the rest. It
+          Greenhouse, Workday, Lever, or Ashby — and jobBlink does the rest. It
           automatically pulls in all relevant details and adds the job to your
           personalized table.
         </Paragraph>
@@ -63,7 +63,7 @@ function About() {
               “rejected,” or “offer”
             </li>
             <li>
-              Manually add jobs if you want to use JobBlink like a traditional
+              Manually add jobs if you want to use jobBlink like a traditional
               tracker
             </li>
             <li>Export to CSV for record-keeping</li>

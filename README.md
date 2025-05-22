@@ -10,7 +10,7 @@
     <img src="https://raw.githubusercontent.com/9Mohamedismail/jobBlink/main/src/assets/Logo.png" alt="JobBlink Logo" width="90" height="90">
   </a>
 
-<h3 align="center">JobBlink</h3>
+<h3 align="center">jobBlink</h3>
 
   <p align="center">
     Track your job applications in a blink — no spreadsheets, no clutter.
@@ -23,7 +23,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About JobBlink</a>
+      <a href="#about-the-project">About jobBlink</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
         <li><a href="#features">Features</a></li>
@@ -43,11 +43,11 @@
   </ol>
 </details>
 
-## About JobBlink
+## About jobBlink
 
-**JobBlink** is a job application tracker that eliminates the need to manually enter job data into spreadsheets. Paste a link from Greenhouse, Workday, Lever, or Ashby, and JobBlink will auto-extract the job title, company, location, and more — saving it to your table instantly.
+**jobBlink** is a job application tracker that eliminates the need to manually enter job data into spreadsheets. Paste a link from Greenhouse, Workday, Lever, or Ashby, and jobBlink will auto-extract the job title, company, location, and more — saving it to your table instantly.
 
-Whether you want to edit job details, apply custom tags, or add entries manually, JobBlink is built to make job tracking effortless.
+Whether you want to edit job details, apply custom tags, or add entries manually, jobBlink is built to make job tracking effortless.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
