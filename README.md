@@ -7,7 +7,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/9Mohamedismail/jobBlink">
-    <img src="src/assets/jobblink_logo.png" alt="Logo" width="90" height="90">
+    <img src="https://raw.githubusercontent.com/9Mohamedismail/jobBlink/main/src/assets/Logo.png" alt="JobBlink Logo" width="90" height="90">
   </a>
 
 <h3 align="center">JobBlink</h3>
