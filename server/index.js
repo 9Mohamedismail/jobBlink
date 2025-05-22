@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import apiRoutes from "./routes/api.js";
+import { getBrowser } from "./utils/browser.js";
 
 const app = express();
 
@@ -15,6 +16,18 @@ app.use(cors({ origin: CLIENT_URL }));
 app.use(express.json());
 
 app.use("/api", apiRoutes);
+
+process.on("SIGTERM", async () => {
+  console.log("SIGTERM received: shutting down...");
+  try {
+    const browser = await getBrowser();
+    if (browser) await browser.close();
+  } catch (e) {
+    console.error("Error closing browser:", e.message);
+  } finally {
+    process.exit(0);
+  }
+});
 
 app
   .listen(PORT, () => {

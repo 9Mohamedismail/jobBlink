@@ -1,22 +1,13 @@
 import express from "express";
-import puppeteer from "puppeteer-extra";
-import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import path from "path";
+import { getBrowser } from "../utils/browser.js";
 
 const router = express.Router();
-puppeteer.use(StealthPlugin());
 
 async function scrapeJobData(url, tag) {
-  let browser;
+  const browser = await getBrowser();
+  const page = await browser.newPage();
+
   try {
-    browser = await puppeteer.launch({
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      executablePath: puppeteer.executablePath(),
-    });
-
-    const page = await browser.newPage();
-
     await page.setUserAgent(
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     );
@@ -37,10 +28,11 @@ async function scrapeJobData(url, tag) {
           throw new Error("KNOWN_URL_NO_JOB_DATA");
         }
       }
+
       const pathnameParts = new URL(url).pathname.split("/");
       const company = pathnameParts[1] || "N/A";
 
-      return await page.evaluate(
+      const job = await page.evaluate(
         (companyFromUrl, tagValue) => {
           const position =
             document.querySelector('meta[property="og:title"]')?.content ||
@@ -61,14 +53,15 @@ async function scrapeJobData(url, tag) {
         company,
         tag
       );
+
+      return job;
     } else {
       const jobData = await page.evaluate(() => {
         const script = document.querySelector(
           'script[type="application/ld+json"]'
         );
-        if (!script) {
-          throw new Error("KNOWN_URL_NO_JOB_DATA");
-        }
+        if (!script) throw new Error("KNOWN_URL_NO_JOB_DATA");
+
         try {
           return JSON.parse(script.innerText);
         } catch {
@@ -83,12 +76,12 @@ async function scrapeJobData(url, tag) {
         position: jobData?.title || jobData?.identifier?.name || "N/A",
         location: jobData?.jobLocation?.address?.addressLocality || "N/A",
         jobType: jobData?.employmentType?.replace(/_/g, " ") || "N/A",
-        tag: tag,
+        tag,
         key: `${parsedCompany}-${Date.now()}-${Math.random()}`,
       };
     }
   } finally {
-    if (browser) await browser.close();
+    await page.close(); // Close the tab, but NOT the browser
   }
 }
 
