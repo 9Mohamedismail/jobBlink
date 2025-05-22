@@ -108,7 +108,7 @@ node index.js
 
 ![Paste/edit/delete](screenshots/mainGif.gif)  
 ![Manual add + tag](screenshots/manualEdit.gif)  
-![Settings demo](screenshots/settings.gif)
+![Settings demo](https://github.com/9Mohamedismail/jobBlink/blob/main/screenshots/mainGif.gif?raw=true)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
