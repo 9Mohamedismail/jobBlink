@@ -16,7 +16,7 @@ async function scrapeJobData(url, tag) {
     const page = await browser.newPage();
 
     await page.setUserAgent(
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
     );
 
     await page.goto(url, { waitUntil: "networkidle2", timeout: 60000 });
@@ -59,12 +59,12 @@ async function scrapeJobData(url, tag) {
           };
         },
         company,
-        tag
+        tag,
       );
     } else {
       const jobData = await page.evaluate(() => {
         const script = document.querySelector(
-          'script[type="application/ld+json"]'
+          'script[type="application/ld+json"]',
         );
         if (!script) {
           throw new Error("KNOWN_URL_NO_JOB_DATA");
@@ -76,13 +76,15 @@ async function scrapeJobData(url, tag) {
         }
       });
 
+      const parsedCompany = jobData?.hiringOrganization?.name || "N/A";
+
       return {
-        company: jobData?.hiringOrganization?.name || "N/A",
+        company: parsedCompany,
         position: jobData?.title || jobData?.identifier?.name || "N/A",
         location: jobData?.jobLocation?.address?.addressLocality || "N/A",
         jobType: jobData?.employmentType?.replace(/_/g, " ") || "N/A",
         tag: tag,
-        key: `${company}-${Date.now()}-${Math.random()}`,
+        key: `${parsedCompany}-${Date.now()}-${Math.random()}`,
       };
     }
   } finally {

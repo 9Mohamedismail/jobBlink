@@ -41,9 +41,9 @@ function About() {
         <Paragraph>
           JobBlink was born out of frustration. After spending hours applying to
           jobs, I found myself wasting even more time copying and pasting each
-          job's title, company, location, etc into an Excel sheet — over and
-          over again. It was tedious, inefficient, and took the joy out of
-          staying organized.
+          jobs title, company, location, etc into an Excel sheet — over and over
+          again. It was tedious, inefficient, and took the joy out of staying
+          organized.
         </Paragraph>
         <Paragraph>That’s when I decided to build a better way.</Paragraph>
         <Paragraph>

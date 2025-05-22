@@ -14,7 +14,7 @@ export const parseAndSaveJob = async (
   setUrlErrorType,
   setConfirmLoading,
   setVisible,
-  setInputUrl
+  setInputUrl,
 ) => {
   setConfirmLoading(true);
   const formattedDate = new Date().toLocaleDateString();

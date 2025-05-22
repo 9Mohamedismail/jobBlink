@@ -18,7 +18,7 @@ function TagUpdateForm({ open, setOpen, selectedRows, refreshJobData }) {
     const updatedJobs = allJobs.map((job) =>
       selectedRows.some((selected) => selected.key === job.key)
         ? { ...job, tag: newTag }
-        : job
+        : job,
     );
 
     UpdateLocalStorage("jobData", updatedJobs);
