@@ -100,14 +100,16 @@ node index.js
 
 ## Usage
 
-> Quick demo of key features:
+Quick demo of key features:
 
-- 🧩 First GIF: Paste a job link, edit fields, and delete a job  
-- ✍️ Second GIF: Manually add a job and update its tag  
-- ⚙️ Third GIF: Use settings to hide rejected jobs, sort, and clear all data
+> - 🧩 Paste a job link, edit fields, and delete a job
 
-![Paste/edit/delete](screenshots/mainGif.gif)  
-![Manual add + tag](screenshots/manualEdit.gif)  
+![Paste/edit/delete](screenshots/mainGif.gif)
+> - ✍️ : Manually add a job and update its tag
+
+![Manual add + tag](https://github.com/9Mohamedismail/jobBlink/blob/main/screenshots/manualEditing.gif)
+> - ⚙️ : Use settings to hide rejected jobs, sort, and clear all data
+
 ![Settings demo](https://github.com/9Mohamedismail/jobBlink/blob/main/screenshots/settings.gif?raw=true)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
