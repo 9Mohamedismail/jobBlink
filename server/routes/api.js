@@ -1,6 +1,7 @@
 import express from "express";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import path from "path";
 
 const router = express.Router();
 puppeteer.use(StealthPlugin());
@@ -9,8 +10,9 @@ async function scrapeJobData(url, tag) {
   let browser;
   try {
     browser = await puppeteer.launch({
-      headless: true,
+      headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath: puppeteer.executablePath(),
     });
 
     const page = await browser.newPage();
