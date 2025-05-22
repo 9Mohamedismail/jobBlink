@@ -5,9 +5,8 @@ export const AddLocalStorage = (jobData) => {
 
   try {
     localStorage.setItem("jobData", JSON.stringify(updatedStorage));
-    console.log("Success!");
   } catch (error) {
-    console.log("Failure!", error);
+    console.error("Failed to save job data to localStorage.", error);
   }
 };
 

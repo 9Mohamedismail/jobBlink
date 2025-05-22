@@ -11,8 +11,6 @@ const tagColors = {
 };
 
 const getColumns = ({ handleSave, openModal, handleDelete, sortJobsBy }) => {
-  console.log("sortJobsBy:", sortJobsBy); // ✅ Now this works properly
-
   return [
     {
       title: "company",

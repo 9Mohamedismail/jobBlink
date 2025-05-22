@@ -41,9 +41,9 @@ function About() {
         <Paragraph>
           JobBlink was born out of frustration. After spending hours applying to
           jobs, I found myself wasting even more time copying and pasting each
-          jobs title, company, location, etc into an Excel sheet — over and over
-          again. It was tedious, inefficient, and took the joy out of staying
-          organized.
+          job&rsquo;s title, company, location, and more into an Excel sheet —
+          over and over again. It was tedious, inefficient, and took the joy out
+          of staying organized.
         </Paragraph>
         <Paragraph>That’s when I decided to build a better way.</Paragraph>
         <Paragraph>
@@ -66,6 +66,7 @@ function About() {
               Manually add jobs if you want to use JobBlink like a traditional
               tracker
             </li>
+            <li>Export to CSV for record-keeping</li>
           </ul>
         </Paragraph>
         <Paragraph>
@@ -73,7 +74,7 @@ function About() {
           login required. Your job tracking stays local, private, and instantly
           accessible. Plus, everything is open source — check out the code on{" "}
           <a
-            href="https://github.com/yourusername/your-repo-name"
+            href="https://github.com/9Mohamedismail/jobBlink"
             target="_blank"
             rel="noopener noreferrer"
           >

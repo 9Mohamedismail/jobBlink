@@ -5,23 +5,17 @@ import apiRoutes from "./routes/api.js";
 
 const app = express();
 
-// Environment configuration
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
-// Security middleware
 app.use(helmet());
 
-// Enable CORS
 app.use(cors({ origin: CLIENT_URL }));
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 
-// API routes
 app.use("/api", apiRoutes);
 
-// Start server
 app
   .listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

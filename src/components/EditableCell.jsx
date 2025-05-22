@@ -32,7 +32,7 @@ const EditableCell = ({
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (error) {
-      console.log("Save failed:", error);
+      console.error("Save failed:", error);
     }
   };
 
