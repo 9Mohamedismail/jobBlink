@@ -100,12 +100,15 @@ node index.js
 
 ## Usage
 
-> Add demo GIFs/screenshots here to show the workflow: paste job, auto-fill, edit, tag, and export.
+> Quick demo of key features:
 
-md
-![Paste job link](screenshots/paste-link.gif)
-![Edit and tag](screenshots/edit-tag.gif)
+- 🧩 First GIF: Paste a job link, edit fields, and delete a job  
+- ✍️ Second GIF: Manually add a job and update its tag  
+- ⚙️ Third GIF: Use settings to hide rejected jobs, sort, and clear all data
 
+![Paste/edit/delete](screenshots/mainGif.gif)  
+![Manual add + tag](screenshots/manualEdit.gif)  
+![Settings demo](screenshots/settings.gif)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
